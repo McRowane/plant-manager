@@ -1,6 +1,6 @@
 // Keeps the Plant Manager app itself quick to open and usable offline. Your data never goes through here:
 // it comes from your Plant Manager API (a different site) and the app keeps its own last copy.
-const VERSION = 'pm-b1d886f676';
+const VERSION = 'pm-48415768fd';
 const SHELL = ['./', 'index.html', 'config.js', 'connect.js', 'connect.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
