@@ -1,0 +1,10 @@
+/* Connect screen for the installable app. Uses the Plant Manager's own colour tokens. */
+.pm-connect{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:calc(24px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));overflow:auto}
+.pm-card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 20px;display:grid;gap:10px}
+.pm-mark{border-radius:14px}
+.pm-card h1{font:700 1.5rem/1.15 var(--f-display);margin:4px 0 0}
+.pm-card p{margin:0;color:var(--muted);font-size:.95rem}
+.pm-card label{font-size:.82rem;color:var(--muted);margin-top:6px}
+.pm-card textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--fg);font:500 14px/1.4 var(--f-mono);resize:vertical}
+.pm-card button{border:0;border-radius:10px;padding:13px 16px;font-weight:700;background:var(--leaf);color:var(--surface);cursor:pointer}
+.pm-card .pm-err{color:var(--bad);font-size:.88rem}
