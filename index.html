@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
+/* Styles.html: all of the Plant Manager's CSS (colour tokens, dark mode, layout). Included into App.html. */
 /* Plant Manager: phone-first; a sidebar layout takes over at 1024px. Same palette as the catalog. */
 :root{
   --bg:#f2f4ef; --surface:#ffffff; --sunk:#e7ebe4; --line:#d3dbd0;
@@ -59,7 +60,7 @@ a{color:var(--accent)}
 .iconbtn.spin svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 main{padding:14px 16px calc(var(--nav-h) + 28px + env(safe-area-inset-bottom,0px));max-width:1180px;margin:0 auto}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:4px 2px calc(4px + env(safe-area-inset-bottom,0px))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:4px 2px calc(4px + env(safe-area-inset-bottom,0px))}
 nav.tabs .brand{display:none}
 nav.tabs button{border:0;background:none;display:grid;justify-items:center;gap:2px;padding:6px 1px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:.66rem;font-weight:700;position:relative;min-width:0}
 nav.tabs button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
@@ -205,7 +206,24 @@ main.selecting{padding-bottom:calc(var(--nav-h) + 110px + env(safe-area-inset-bo
 .statusrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
-.gallery a{position:relative;display:block;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--sunk)}
+.gallery a,.gallery .gi{position:relative;display:block;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--sunk);border:0;padding:0;cursor:zoom-in}
+.linkish{all:unset;cursor:pointer;min-width:0;display:block}
+.viewer{position:fixed;inset:0;z-index:60;background:#000;display:grid;grid-template-rows:auto 1fr;color:#fff}
+.vbar{display:flex;align-items:center;gap:12px;padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px}
+.vtitle2{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vcount{font:500 .82rem var(--f-mono);opacity:.8}
+.vclose{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
+.vstrip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;min-height:0}
+.vstrip::-webkit-scrollbar{display:none}
+.vslide{flex:0 0 100%;scroll-snap-align:center;display:grid;place-items:center;min-height:0;padding:0 0 env(safe-area-inset-bottom,0px)}
+.vslide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.vslide iframe{width:100%;height:100%;border:0;background:#000}
+.vplay{position:relative;border:0;padding:0;background:none;cursor:pointer;max-width:100%;max-height:100%;display:grid;place-items:center}
+.vpi{position:absolute;width:68px;height:68px;border-radius:50%;background:rgba(0,0,0,.55);border:2px solid #fff}
+.vpi::after{content:"";position:absolute;left:27px;top:20px;border-style:solid;border-width:14px 0 14px 22px;border-color:transparent transparent transparent #fff}
+.vnav{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.6rem;cursor:pointer}
+.vprev{left:10px}.vnext{right:10px}
+@media (hover:none){.vnav{display:none}}
 .gallery img{width:100%;height:100%;object-fit:cover;display:block}
 .gallery .v{position:absolute;right:4px;bottom:4px;background:rgba(10,14,12,.65);color:#fff;font-size:.62rem;font-weight:700;border-radius:4px;padding:1px 4px}
 .files{display:grid;gap:8px;margin-top:10px}
@@ -253,7 +271,7 @@ main.selecting{padding-bottom:calc(var(--nav-h) + 110px + env(safe-area-inset-bo
   .list.grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
   .toolbar{grid-template-columns:minmax(0,1fr) auto;align-items:center}
   .toolbar .chips,.toolbar .seg{grid-column:1/-1}
-  .board.lanes{grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+  .board.lanes{grid-template-columns:repeat(5,minmax(0,1fr));align-items:start}
   .board.lanes .row{grid-template-columns:minmax(0,1fr)}
   .board.lanes .row.picking{grid-template-columns:28px minmax(0,1fr)}
   .board.lanes .row .r{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}
@@ -327,7 +345,7 @@ nav.tabs .subnav{display:none}
 .kpi small{font-size:.76rem;color:var(--muted)}
 .kpi.alert{border-left-color:var(--accent)} .kpi.warn{border-left-color:var(--hold)} .kpi.bad{border-left-color:var(--bad)} .kpi.ok{border-left-color:var(--leaf)}
 div.kpi{cursor:default}
-.kpis.in{grid-template-columns:repeat(2,1fr);padding:12px 14px;border-bottom:1px solid var(--line)}
+.kpis.in{grid-template-columns:repeat(3,minmax(0,1fr));padding:12px 14px;border-bottom:1px solid var(--line)}
 .kpis.in .kpi{border-left-width:1px;background:var(--bg)}
 
 /* data tables */
@@ -369,6 +387,10 @@ table.dtab td.selc,table.dtab th.selc{width:34px;padding-right:0}
 .viz .col{fill:var(--leaf)}
 .viz .col.hl,.viz .hit:hover + .col{fill:var(--accent)}
 .viz .ln{fill:none;stroke:var(--s1);stroke-width:2}
+.viz .ln2{fill:none;stroke:var(--s1);stroke-width:2;stroke-dasharray:4 4;opacity:.6}
+.viz .key{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin-top:4px}
+.viz .key i{display:inline-block;width:18px;border-top:2px solid var(--s1);vertical-align:middle;margin-right:5px}
+.viz .key i.dash{border-top-style:dashed;opacity:.6}
 .viz .ar{fill:var(--s1);opacity:.08}
 .viz .dot{fill:var(--s1);stroke:var(--surface);stroke-width:2}
 .viz .hit{fill:transparent;cursor:crosshair}
@@ -435,6 +457,36 @@ table.dtab td.selc,table.dtab th.selc{width:34px;padding-right:0}
   .qa{grid-template-columns:repeat(3,1fr)}
   .list.grid{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
 }
+/* ---- lean layout: Today, folds, three numbers ---- */
+.kpis.three{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:16px}
+.kpis.three .kpi,.kpis.in .kpi{min-width:0;padding:10px}
+.kpis.three .kpi b,.kpis.in .kpi b{font-size:1.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kpis.three .kpi span,.kpis.in .kpi span{font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.today .sec{margin-top:0}
+.today + .qa{margin-top:16px}
+.qa{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sheet .qa{grid-template-columns:repeat(3,minmax(0,1fr))}
+.back{border:0;background:none;color:var(--leaf);font-weight:700;padding:0 0 10px;cursor:pointer;font-size:.92rem}
+details.fold{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);margin-top:10px}
+details.fold > summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;font-weight:700;font-size:.9rem}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary .edit{color:var(--leaf);font-size:.84rem;flex:none}
+details.fold > summary > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.fold[open] > summary{border-bottom:1px solid var(--line)}
+details.fold > .form,details.fold > .hbars{padding:12px 14px}
+details.fold.more{grid-column:1/-1}
+.panel details.filters.fold{margin:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:var(--bg);padding:0}
+.panel details.filters.fold[open]{padding-bottom:10px}
+.panel details.filters.fold > .frow{padding:0 14px}
+.panel details.filters.fold[open] > summary{border-bottom:0}
+details.info{margin:0 0 12px;font-size:.86rem;color:var(--muted)}
+details.info > summary{cursor:pointer;color:var(--leaf);font-weight:700;list-style:none;display:inline-flex;align-items:center;gap:6px}
+details.info > summary::-webkit-details-marker{display:none}
+details.info > summary::before{content:"i";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;font:700 .7rem var(--f-body)}
+details.info > p{margin:6px 0 0;line-height:1.45}
+.pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pickrow select{width:100%;min-width:0}
+.btn.sold{width:100%;margin:10px 0 2px;font-size:1.05rem;padding:14px}
 </style>
 </head>
 <body>
@@ -458,6 +510,7 @@ table.dtab td.selc,table.dtab th.selc{width:34px;padding-right:0}
 <div class="scrim" id="scrim" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
+/* JsCore.html: helpers, state, derived data, navigation and shared pieces. Included into App.html (inside its one <script>); keep the files in this order. */
 window.addEventListener('error', e => { const t = document.getElementById('toast'); if(t){ t.textContent = 'App error: ' + (e.message || e); t.className = 'toast bad'; t.hidden = false; } });
 (function(){
 'use strict';
@@ -505,8 +558,8 @@ const run = (fn, ...args) => window.PM_TRANSPORT ? window.PM_TRANSPORT(fn, args)
 // so the load() that follows every save is instant instead of a second round trip.
 const ACTIONS = new Set(['savePlant','setPlantStatus','saveCorm','logRepot','saveSale','saveOrder','setOrderStatus','bulkOrderStatus','bulkSaleDelivery',
   'cancelOrder','applyTracking','weatherCheck','saveInquiry','setInquiryStatus','resolveInquiry','saveClient','logClient','sendClientEmail',
-  'saveRecord','deleteRecord','careDone','save1099k','saveSettings','saveExpense','attachReceipt','finishUpload',
-  'createDeviceKey','revokeDevice']);
+  'saveRecord','deleteRecord','careDone','save1099k','saveSettings','saveExpense','attachReceipt','finishUpload','createCalendarLink','revokeCalendarLink',
+  'createDeviceKey','revokeDevice','setComing','saveCormUnit','addCormUnits','deleteCormUnit']);
 const api = async (fn, ...args) => {
   if(!ACTIONS.has(fn)) return run(fn, ...args);
   const r = await run('act', fn, args);
@@ -556,19 +609,28 @@ const toCsv = rows => rows.map(r => r.map(csvCell).join(',')).join('\r\n');
 
 /* ---------- state ---------- */
 const S = {data:null, view:'home', loading:false,
-  inv:'plants', q:'', pStatus:'Available',
+  inv:'plants', q:'', pStatus:'All', cormCv:'', cormVar:'',
   ordTab:'active', ordQ:'',
   cli:'inquiries', inqTab:'open', cliTab:'all', cliQ:'', waitTab:'Waiting',
   sal:'sales', saleTab:'ship', saleQ:'', price:{genus:'', product:'', cultivar:'', var:'', stage:'', range:'all', comps:true}, aucTab:'open',
   mon:'expenses', expTab:'open', expQ:'', taxYear:new Date().getFullYear()};
-try{ const v = JSON.parse(localStorage.getItem('pm.ui') || '{}'); ['view','inv','cli','sal','mon'].forEach(k => { if(v[k]) S[k] = v[k]; }); }catch(e){}
-const saveUi = () => { try{ localStorage.setItem('pm.ui', JSON.stringify({view:S.view, inv:S.inv, cli:S.cli, sal:S.sal, mon:S.mon})); }catch(e){} };
+try{ const v = JSON.parse(localStorage.getItem('pm.ui') || '{}'); ['view','inv','cli','sal','mon','pStatus','cormCv','cormVar'].forEach(k => { if(v[k] != null) S[k] = v[k]; }); }catch(e){}
+if(S.view === 'money'){ S.view = 'sales'; S.sal = S.mon || 'expenses'; }   // Money now lives under Sales
+const saveUi = () => { try{ localStorage.setItem('pm.ui', JSON.stringify({view:S.view, inv:S.inv, cli:S.cli, sal:S.sal, mon:S.mon, pStatus:S.pStatus, cormCv:S.cormCv, cormVar:S.cormVar})); }catch(e){} };
 const VIEWS = [
-  {id:'home', label:'Dashboard', icon:'home'}, {id:'orders', label:'Orders', icon:'box'},
+  {id:'home', label:'Today', icon:'home'}, {id:'orders', label:'Orders', icon:'box'},
   {id:'inventory', label:'Inventory', icon:'leaf'}, {id:'clients', label:'Clients', icon:'users'},
-  {id:'sales', label:'Sales', icon:'chart'}, {id:'money', label:'Money', icon:'wallet'},
+  {id:'sales', label:'Sales', icon:'chart'},
 ];
+// Less-used pages, reached from Sales › More.
+const MORE_PAGES = [['prices','Price charts','chart'],['watch','Price watch','tag'],['auctions','Auctions','star'],['reorder','Reorder supplies','box'],['taxes','Taxes','receipt'],['settings','Settings & devices','gear']];
+/* One word per state, everywhere (the sheet keeps its own values; these are just what you see). */
+const ORDER_SAY = {'Awaiting payment':'Owed', 'Paid':'Unfulfilled', 'Label created':'Label made'};
+const sayOrder = v => ORDER_SAY[v] || v;
+const SAY = {pending:'Owed', hold:'On hold', deposit:'On hold', nfs:'Not for sale', sold:'Sold', available:'Available', auction:'Auction', tbd:'TBD'};
+const say = v => SAY[String(v || '').trim().toLowerCase()] || v;
 const ORDER_ACTIVE = ['Inquiry','Awaiting payment','On hold','Paid','Label created'];
+const LANES = ['Paid','Label created','Awaiting payment','On hold','Inquiry'];   // most urgent first: Unfulfilled on the left
 const PAID_STATUS = ['Paid','Label created','Shipped','Delivered'];   // paid in full
 
 /* ---------- derived data ---------- */
@@ -584,7 +646,7 @@ function processor(pay){
 function prep(d){
   const t = today();
   d.options.stageList = d.options.stageList || ['Parent','Teen','Pup','Sprouting Corm','Corm'];
-  d.sales.forEach(s => { s._d = parseD(s.date); s._p = money(s.price); s._u = parseInt(s.units, 10) || 0; s._paid = /^paid$/i.test(s.paid); s._pending = /^pending$/i.test(s.paid); s._deposit = /^deposit$/i.test(s.paid);
+  d.sales.forEach(s => { s._d = parseD(s.date); s._p = money(s.price); s._u = parseInt(s.units, 10) || 0; s._paid = /^paid$/i.test(s.paid); s._pending = /^pending$/i.test(s.paid); s._deposit = /^(deposit|hold)$/i.test(s.paid);
     s._nobid = /no bid/i.test(s.paid);
     s._delivered = /^(y|yes|true|delivered|✓)/i.test(s.delivered) || !!parseD(s.received);
     s._transit = !s._delivered && (!!s.tracking || /in transit|out for delivery|exception/i.test(s.delivered));
@@ -630,8 +692,12 @@ function prep(d){
   d.sales.forEach(s => {
     s._rev = s._paid ? s._p : 0; s._revD = s._d;
     if(s._deposit){ const o = byOrder[s.orderId], rows = depRows[s.orderId] || [], sum = rows.reduce((a, x) => a + x._p, 0);
-      s._rev = o && sum ? Math.round(o._deposit * s._p / sum * 100) / 100 : 0; s._revD = (o && parseD(o.depositOn)) || s._d; }
+      s._rev = money(s.paidAmt) > 0 ? Math.min(money(s.paidAmt), s._p) : o && sum ? Math.round(o._deposit * s._p / sum * 100) / 100 : 0;
+      s._revD = (o && parseD(o.depositOn)) || s._d; }
+    s._owed = s._pending ? s._p : s._deposit ? Math.max(0, Math.round((s._p - s._rev) * 100) / 100) : 0;   // unrealized: still owed
   });
+  // Clients who owe: part-paid (On hold) or unpaid open orders.
+  d.clients.forEach(c => { const open = c._orders.filter(o => !['Inquiry','Cancelled'].includes(o.status)); c._owed = open.reduce((a, o) => a + o._due, 0); c._hold = open.some(o => o._onHold && o._due > 0); });
   d.clientLog.forEach(l => { l._d = parseD(l.date); if(d.clientById[l.clientId]) d.clientById[l.clientId]._log.push(l); });
   // last repot per SKU from the log and the "Repot Dates" cell
   const last = {};
@@ -645,6 +711,11 @@ function prep(d){
   });
   d.byPlant = Object.fromEntries(d.plants.map(p => [p.sku, p]));
   d.byLot = Object.fromEntries(d.corms.map(c => [c.lot, c]));
+  // individual corms (sub-SKUs) and lot albums ("LOT 0043")
+  d.units = d.units || [];
+  d.byUnit = Object.fromEntries(d.units.map(u => [u.id, u]));
+  d.corms.forEach(c => { c._media = d.media['LOT ' + c.lot] || null; c._units = d.units.filter(u => u.lot === c.lot); c._active = !/^sold$/i.test(c.status); });
+  d.units.forEach(u => { u._lot = d.byLot[u.lot] || null; });
   // lineage: parent SKU -> children (plants and corm lots). Non-number parents are a source (who it came from).
   const isSku = v => /^\d{1,4}$/.test(String(v || '').trim());
   const norm = v => String(v).trim().padStart(4, '0');
@@ -659,7 +730,8 @@ function prep(d){
   d.repotDue = d.plants.filter(p => p._active && p._repot && days(t, p._repot) > rd).sort((a,b)=>a._repot-b._repot);
   // waitlist matches against what's available right now
   const avail = d.plants.filter(p => /^available$/i.test(p.status)).map(p => ({kind:'plant', id:p.sku, cultivar:p.cultivar, var:p.var, stage:p.stage, label:`${p.sku} · ${p.cultivar}${p.var ? ' ' + p.var : ''}${p.stage ? ' (' + p.stage + ')' : ''}`}))
-    .concat(d.corms.filter(c => /^available$/i.test(c.status)).map(c => ({kind:'corm', id:c.lot, cultivar:c.common || c.cultivar || c.item, var:c.var, stage:'Corm', label:`Corm ${c.lot} · ${c.item}`})));
+    .concat(d.corms.filter(c => /^available$/i.test(c.status) && !c._units.length).map(c => ({kind:'corm', id:c.lot, cultivar:c.common || c.cultivar || c.item, var:c.var, stage:'Corm', label:`Corm ${c.lot} · ${c.item}`})))
+    .concat(d.units.filter(u => /^available$/i.test(u.status) && u._lot).map(u => ({kind:'unit', id:u.id, cultivar:u._lot.common || u._lot.cultivar || u._lot.item, var:u._lot.var, stage:'Corm', label:`Corm ${u.id} · ${u._lot.item}`})));
   const fits = (w, a) => w.cultivar && low(a.cultivar).includes(low(w.cultivar)) && (!w.var || low(a.var).includes(low(w.var))) && (!w.stage || low(a.stage) === low(w.stage));
   d.waitlist.forEach(w => { w._d = parseD(w.added); w._matches = /^(waiting)$/i.test(w.status || 'Waiting') ? avail.filter(a => fits(w, a)) : []; if(d.clientById[w.clientId]) d.clientById[w.clientId]._waits.push(w); });
   d.coming.forEach(c => { c._waiting = d.waitlist.filter(w => /^waiting$/i.test(w.status || 'Waiting') && low(w.cultivar) === low(c.cultivar) && (!c.var || !w.var || low(w.var) === low(c.var))).length; });
@@ -676,15 +748,14 @@ function badges(d){
     orders: d.orders.filter(o => o._toShip).length,
     clients: d.inquiries.filter(q => q._open).length,
     inventory: d.care.filter(c => c._overdue).length,
-    money: 0, sales: 0, home: 0,
+    sales: 0, home: 0,
   };
 }
 // Sub-pages per section (also shown under the active section in the desktop sidebar).
 const SUBS = {
   inventory: ['inv', [['plants','Plants'],['corms','Corm lots'],['care','Care'],['coming','Coming soon']]],
   clients: ['cli', [['inquiries','Inquiries'],['clients','Clients'],['waitlist','Waitlist']]],
-  sales: ['sal', [['sales','Sales log'],['prices','Price charts'],['watch','Price watch'],['auctions','Auctions']]],
-  money: ['mon', [['expenses','Expenses'],['reorder','Reorder'],['profit','Profit'],['taxes','Taxes'],['settings','Payment info']]],
+  sales: ['sal', [['sales','Sales'],['expenses','Expenses'],['profit','Profit'],['more','More']]],
 };
 function renderNav(){
   const d = S.data, n = $('#nav'); n.replaceChildren();
@@ -700,12 +771,15 @@ function renderNav(){
     const sub = SUBS[v.id];
     if(sub && S.view === v.id){
       const box = el('div','subnav');
-      sub[1].forEach(([id, label]) => { const s = el('button', null, label); s.type = 'button'; if(S[sub[0]] === id) s.setAttribute('aria-current','true'); s.onclick = () => go(v.id, {[sub[0]]: id}); box.append(s); });
+      sub[1].forEach(([id, label]) => { const s = el('button', null, label); s.type = 'button'; if(S[sub[0]] === id || (id === 'more' && MORE_PAGES.some(p => p[0] === S[sub[0]]))) s.setAttribute('aria-current','true'); s.onclick = () => go(v.id, {[sub[0]]: id}); box.append(s); });
       n.append(box);
     }
   });
 }
-function go(v, sub){ S.view = v; if(sub) Object.assign(S, sub); saveUi(); window.scrollTo(0,0); render(); }
+function go(v, sub){
+  if(v === 'money'){ v = 'sales'; sub = Object.assign({}, sub, {sal: (sub && sub.mon) || 'expenses'}); }   // old links into Money
+  S.view = v; if(sub) Object.assign(S, sub); saveUi(); window.scrollTo(0,0); render();
+}
 function render(){
   renderNav();
   const m = $('#main'); m.replaceChildren();
@@ -713,20 +787,21 @@ function render(){
   m.classList.remove('selecting');
   const v = VIEWS.find(x => x.id === S.view) || VIEWS[0];
   if(S.sel && !((S.sel.kind === 'orders' && v.id === 'orders') || (S.sel.kind === 'sales' && v.id === 'sales' && S.sal === 'sales'))) S.sel = null;
-  const sub = SUBS[v.id], subLabel = sub ? (sub[1].find(x => x[0] === S[sub[0]]) || sub[1][0])[1] : '';
+  const sub = SUBS[v.id], morePg = v.id === 'sales' && MORE_PAGES.find(p => p[0] === S.sal);
+  const subLabel = morePg ? morePg[1] : sub ? (sub[1].find(x => x[0] === S[sub[0]]) || sub[1][0])[1] : '';
   $('#title').firstChild.textContent = subLabel || v.label;
   $('#crumb').textContent = subLabel ? v.label : 'Plant Manager';
   const synced = S.data ? 'Synced ' + new Date(S.data._at).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}) : '';
   $('#subtitle').textContent = synced; $('#sync').textContent = synced;
   if(!S.data) return;
-  ({home:viewDashboard, orders:viewOrders, inventory:viewInventory, clients:viewClients, sales:viewSales, money:viewMoney})[v.id](m);
+  ({home:viewToday, orders:viewOrders, inventory:viewInventory, clients:viewClients, sales:viewSales})[v.id](m);
 }
 
 /* ---------- shared pieces ---------- */
-function subtabs(m, key, items){
+function subtabs(m, key, items, cur){
   const w = el('div','subtabs'); w.setAttribute('role','tablist');
-  if(!items.some(i => i[0] === S[key])) S[key] = items[0][0];
-  items.forEach(([id, label, n]) => { const b = el('button', null, label); b.type='button'; b.setAttribute('aria-pressed', String(S[key]===id)); if(n) b.append(el('span','ct', String(n))); b.onclick = () => { S[key] = id; saveUi(); render(); }; w.append(b); });
+  if(!cur && !items.some(i => i[0] === S[key])) S[key] = items[0][0];
+  items.forEach(([id, label, n]) => { const b = el('button', null, label); b.type='button'; b.setAttribute('aria-pressed', String((cur || S[key])===id)); if(n) b.append(el('span','ct', String(n))); b.onclick = () => { S[key] = id; saveUi(); render(); }; w.append(b); });
   m.append(w);
   return S[key];
 }
@@ -742,12 +817,12 @@ function listOf(m, items, mk, emptyText, grid){
 }
 function statusPill(s){
   const v = String(s || '').trim(), k = v.toLowerCase();
-  return el('span', 'pill ' + (k==='available' ? 'ok' : k==='pending' ? 'warn' : k==='sold' ? 'info' : ''), v || 'No status');
+  return el('span', 'pill ' + (k==='available' ? 'ok' : k==='pending' || k==='hold' ? 'warn' : k==='sold' ? 'info' : ''), say(v) || 'No status');
 }
 function orderPill(o){
   const k = o.status;
   const cls = {'Inquiry':'', 'Awaiting payment':'warn', 'On hold':'warn', 'Paid':'alert', 'Label created':'info', 'Shipped':'info', 'Delivered':'ok', 'Cancelled':''}[k] || '';
-  return el('span','pill ' + cls, k === 'Paid' ? 'To ship' : k || 'Order');
+  return el('span','pill ' + cls, sayOrder(k) || 'Order');
 }
 function kv(pairs){
   const dl = el('dl','kv');
@@ -783,9 +858,10 @@ function payMessage(o){
   const ship = money(o.shipCharge);
   const dep = o._onHold && o._deposit ? [`Deposit received: −${fmt$(o._deposit)}`, `Balance due: ${fmt$(o._due)}`] : [];
   return [`Hi${first && first !== '(no' ? ' ' + first : ''}! Here's your total:`, items, ship ? '• Shipping · ' + fmt$(ship) : '', `Total: ${fmt$(o._total)}`, ...dep, '',
-    ways.length ? 'You can pay with:\n' + ways.map(w => '• ' + w).join('\n') : '(Add your payment info under Money › Payment info.)',
+    ways.length ? 'You can pay with:\n' + ways.map(w => '• ' + w).join('\n') : '(Add your payment info under Sales › More › Settings.)',
     s.payNote || '', `Please put ${o.id} in the note. Thank you!`].filter(x => x !== '').join('\n');
 }
+/* JsOrders.html: multi-select, orders, ship-by calendar, quick Sold, Pirate Ship, weather. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ---------- Home ---------- */
 /* ---------- Multi-select (Orders and Sales lists) ---------- */
 // S.sel = {kind:'orders'|'sales', ids:Set, visible:[ids], redraw:fn}
@@ -847,13 +923,16 @@ function orderRow(o){
 function viewOrders(m){
   const d = S.data;
   const tabs = {
-    active:['Open', o => o._active], ship:['To ship', o => o._toShip], unpaid:['Awaiting payment', o => o.status==='Awaiting payment'], hold:['On hold', o => o._onHold],
+    ship:['Unfulfilled', o => o._toShip], active:['Open', o => o._active], unpaid:['Owed', o => o.status==='Awaiting payment'], hold:['On hold', o => o._onHold],
     inquiry:['Inquiry', o => o.status==='Inquiry'], shipped:['Shipped', o => o.status==='Shipped'], delivered:['Delivered', o => o.status==='Delivered'],
     cancelled:['Cancelled', o => o.status==='Cancelled'], all:['All', () => true]};
   const tb = el('div','toolbar');
   const search = el('input','search'); search.type='search'; search.placeholder='Search name, item, SKU, tracking, order #'; search.value = S.ordQ;
   const add = el('div','addbar');
-  add.append(button('New order','btn small', () => orderForm(), 'plus'), button('Pirate Ship','btn small ghost', () => pirateSheet(), 'truck'), selectButton('orders'));
+  const tools = () => { const sh = sheet('Order tools'); const g = el('div','qa');
+    [['truck','Pirate Ship',pirateSheet], ['clock','Ship-by calendar',calendarSheet]].forEach(([ic, label, fn]) => { const b = el('button'); b.type='button'; b.append(icon(ic), el('span', null, label)); b.onclick = () => { sh.close(); fn(); }; g.append(b); });
+    sh.body.append(g); sh.close = sh.open(); };
+  add.append(button('New order','btn small', () => orderForm(), 'plus'), button('Tools','btn small ghost', tools, 'truck'), selectButton('orders'));
   tb.append(search, add, chipRow('ordTab', tabs, d.orders)); m.append(tb);
   const box = el('div'); m.append(box);
   const row = o => selWrap('orders', o.id, orderRow(o));
@@ -875,22 +954,23 @@ function viewOrders(m){
     if(q) list = list.filter(o => [o.id, o._name, o.items, o.tracking, o.notes, o.platform].join(' ').toLowerCase().includes(q));
     box.replaceChildren();
     const late = list.filter(o => o._late).length;
-    const board = S.ordTab === 'active' && !q && (S.ordMode || 'board') === 'board';
+    const board = DESK.matches && S.ordTab === 'active' && !q && (S.ordMode || 'board') === 'board';
     const rec = list.reduce((a,o)=>a+o._received,0), due = list.reduce((a,o)=>a+o._due,0);
     const p = panel(`${plural(list.length, 'order')} · ${fmt$(rec)} received${due ? ' · ' + fmt$(due) + ' still due' : ''}`, late ? `${late} late` : '');
-    if(S.ordTab === 'active' && !q){
+    if(DESK.matches && S.ordTab === 'active' && !q){
       const seg = chipGroup(S, 'ordMode', [['board','Board'],['table','Table']], () => { saveUi(); draw(); });
       if(!S.ordMode) seg.firstChild.setAttribute('aria-pressed','true');
       p.head.append(seg);
     }
     if(board){
       const bd = el('div','board lanes');
-      ORDER_ACTIVE.forEach(st => { const lane = el('section','lane'); const items = list.filter(o => o.status === st).sort((a,b) => (a._shipBy||a._d||0)-(b._shipBy||b._d||0)); const h = el('h3'); h.append(el('span', null, st === 'Paid' ? 'Paid · to ship' : st), el('span', null, String(items.length))); lane.append(h); listOf(lane, items, row, 'None', false); bd.append(lane); });
+      LANES.forEach(st => { const lane = el('section','lane'); const items = list.filter(o => o.status === st).sort((a,b) => (a._shipBy||a._d||0)-(b._shipBy||b._d||0)); const h = el('h3'); h.append(el('span', null, sayOrder(st)), el('span', null, String(items.length))); lane.append(h); listOf(lane, items, row, 'None', false); bd.append(lane); });
       p.body.append(bd);
     } else {
       p.body.classList.add('flush');
       const ship = S.ordTab === 'active' || S.ordTab === 'ship' || S.ordTab === 'unpaid';
-      p.body.append(dataTable({id:'orders-' + (ship ? 'ship' : 'date'), cols, rows:list, onOpen:orderSheet, card, sel:{kind:'orders', idOf:o => o.id}, sort: ship ? {k:'shipBy', dir:1} : {k:'date', dir:-1}, inPanel:true, empty:'No orders here.'}));
+      const urgent = S.ordTab === 'active';
+      p.body.append(dataTable({id:'orders-' + (urgent ? 'open' : ship ? 'ship' : 'date'), cols, rows:list, onOpen:orderSheet, card, sel:{kind:'orders', idOf:o => o.id}, sort: urgent ? {k:'status', dir:1} : ship ? {k:'shipBy', dir:1} : {k:'date', dir:-1}, inPanel:true, empty:'No orders here.'}));
     }
     box.append(p);
     selBar('orders');
@@ -899,11 +979,57 @@ function viewOrders(m){
   draw();
 }
 
-const ORDER_STATUS_RANK = st => ['Inquiry','Awaiting payment','On hold','Paid','Label created','Shipped','Delivered','Cancelled'].indexOf(st);
+/* ---------- Calendar: ship-by dates for unfulfilled orders ---------- */
+const shipDay = o => o._shipBy || o._d || today();
+const ymd = dt => `${dt.getFullYear()}${String(dt.getMonth() + 1).padStart(2,'0')}${String(dt.getDate()).padStart(2,'0')}`;
+const shipTitle = o => `Ship ${o.id} · ${o._name}`;
+const shipDesc = o => o._lines.map(l => l.item + (l.units > 1 ? ' ×' + l.units : '')).join('\n');
+function gcalUrl(o){
+  const a = shipDay(o), b = new Date(a.getFullYear(), a.getMonth(), a.getDate() + 1);
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(shipTitle(o)) + '&dates=' + ymd(a) + '/' + ymd(b) + '&details=' + encodeURIComponent(shipDesc(o));
+}
+function icsText(orders){
+  const esc = t => String(t).replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n');
+  const L = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Plant Manager//EN'];
+  orders.forEach(o => { const a = shipDay(o), b = new Date(a.getFullYear(), a.getMonth(), a.getDate() + 1);
+    L.push('BEGIN:VEVENT', 'UID:' + o.id + '@plant-manager', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,''), 'DTSTART;VALUE=DATE:' + ymd(a), 'DTEND;VALUE=DATE:' + ymd(b), 'SUMMARY:' + esc(shipTitle(o)), 'DESCRIPTION:' + esc(shipDesc(o)), 'END:VEVENT'); });
+  L.push('END:VCALENDAR'); return L.join('\r\n');
+}
+function icsLink(orders, name, label){
+  const a = el('a','btn small ghost', label); a.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsText(orders)); a.download = name; a.target = '_blank'; a.rel = 'noopener';
+  return a;
+}
+function calendarSheet(){
+  const d = S.data, open = d.orders.filter(o => o._toShip);
+  const s = sheet('Ship-by calendar', 'Unfulfilled orders on your calendar, on the day each should ship.');
+  const box = el('div'); s.body.append(box);
+  const draw = (links) => {
+    box.replaceChildren();
+    box.append(el('h2','sec','Keep it in sync (recommended)'));
+    if(links){
+      box.append(el('p','note','Subscribe once and new unfulfilled orders appear by themselves. Calendars refresh every few hours.'));
+      const row = el('div','addbar'); row.append(link('Apple Calendar', links.webcal, 'btn small'), link('Google Calendar', 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(links.webcal), 'btn small ghost')); box.append(row);
+      const u = el('input','inp'); u.readOnly = true; u.value = links.url; u.style.marginTop = '8px'; u.onclick = () => u.select(); box.append(u);
+      box.append(el('p','note','Keep this link private: anyone with it can see order numbers and customer names.'));
+    } else if(d.calendarOn){
+      box.append(el('p','note','A calendar link is already active. Make a new link to see it again (the old one stops working).'));
+    } else box.append(el('p','note','Get a private link your calendar can subscribe to.'));
+    const act = el('div','addbar'); act.style.marginTop = '8px';
+    act.append(button(d.calendarOn || links ? 'Make a new link' : 'Get calendar link', 'btn small' + (links ? ' ghost' : ''), async () => { try{ const r = await api('createCalendarLink'); d.calendarOn = true; draw(r); }catch(e){ toast(e.message, true); } }, 'clock'));
+    if(d.calendarOn || links) act.append(button('Stop sharing','btn small ghost', async () => { if(!confirm('Turn off the calendar link? Subscribed calendars stop updating.')) return; try{ await api('revokeCalendarLink'); d.calendarOn = false; draw(null); toast('Calendar link turned off'); }catch(e){ toast(e.message, true); } }));
+    box.append(act);
+    box.append(el('h2','sec','One-time copy'));
+    if(open.length){ const r = el('div','addbar'); r.append(icsLink(open, 'unfulfilled.ics', `Download ${plural(open.length, 'order')} (.ics)`)); box.append(r); }
+    else box.append(el('p','note','Nothing unfulfilled right now.'));
+  };
+  draw(null); s.close = s.open();
+}
+
+const ORDER_STATUS_RANK = st => ['Paid','Label created','Awaiting payment','On hold','Inquiry','Shipped','Delivered','Cancelled'].indexOf(st);   // most urgent first
 const NEXT = {'Inquiry':['Awaiting payment','Send total & await payment'], 'Awaiting payment':['Paid','Mark paid'], 'On hold':['Paid','Mark paid in full'], 'Paid':['Label created','Add tracking'], 'Label created':['Shipped','Mark shipped'], 'Shipped':['Delivered','Mark delivered']};
 function orderSheet(o){
   const d = S.data, c = o._client;
-  const s = sheet(o._name, `${o.id} · ${o.status}${o._d ? ' · started ' + fmtD(o._d) : ''}`);
+  const s = sheet(o._name, `${o.id} · ${sayOrder(o.status)}${o._d ? ' · started ' + fmtD(o._d) : ''}`);
   const close = () => s.close && s.close();
   // next step
   const nx = NEXT[o.status];
@@ -916,7 +1042,7 @@ function orderSheet(o){
     b.style.width = '100%'; s.body.append(b);
   }
   const st = el('div','statusrow');
-  d.options.orderStatus.filter(v => v !== 'Cancelled').forEach(v => { const b = el('button','chip', v); b.type='button'; b.setAttribute('aria-pressed', String(o.status===v)); b.onclick = async () => {
+  d.options.orderStatus.filter(v => v !== 'Cancelled').forEach(v => { const b = el('button','chip', sayOrder(v)); b.type='button'; b.setAttribute('aria-pressed', String(o.status===v)); b.onclick = async () => {
     if(v === 'On hold') return depositForm(o, s);
     b.disabled = true; try{ await api('setOrderStatus', o.id, v, {}); toast(`${o.id}: ${v}`); s.close(); await load(); }catch(e){ toast(e.message, true); b.disabled = false; } }; st.append(b); });
   s.body.append(st);
@@ -931,6 +1057,7 @@ function orderSheet(o){
     ['Sale type', [o.type, o.platform].filter(Boolean).join(' · ')], ['Ship by', o.shipBy], ['Shipping', [o.carrier, o.service, o.tracking].filter(Boolean).join(' · ')],
     ['Label cost', money(o.labelCost) ? fmt$(money(o.labelCost)) : ''], ['Shipped', o.shippedOn], ['Delivered', o.deliveredOn], ['Weather', o.weather], ['Sales log', o.saleIds], ['Notes', o.notes]]));
   if(o.tracking) { const a = link('Track package', trackUrl(o.carrier, o.tracking), 'btn small ghost'); a.style.marginTop = '8px'; s.body.append(a); }
+  if(o._toShip){ const cal = el('div','addbar'); cal.style.marginTop = '8px'; cal.append(link('Google Calendar', gcalUrl(o), 'btn small ghost'), icsLink([o], `ship-${o.id}.ics`, 'Apple Calendar')); s.body.append(cal); }
   // client & address
   s.body.append(el('h2','sec','Client'));
   if(c){
@@ -960,7 +1087,7 @@ function depositForm(o, parent){
     ['depositOn','Date received','date'],
   ], {deposit: o._deposit || '', depositOn: o.depositOn || iso(today())},
   v => { if(!(money(v.deposit) > 0)) throw new Error('Enter the deposit amount.'); if(money(v.deposit) >= o._total) throw new Error('That covers the whole order: use Paid instead.'); return api('setOrderStatus', o.id, 'On hold', {deposit:v.deposit, depositOn:v.depositOn}); },
-  {done: () => `${o.id} on hold`, saveLabel:'Put on hold', lead:`Total ${fmt$(o._total)}. Its plants go HOLD (off Available), the deposit counts as money received, and the rest shows as due until you mark it paid.`});
+  {done: () => `${o.id} on hold`, saveLabel:'Put on hold', lead:`Total ${fmt$(o._total)}. What they’ve paid counts now; the rest shows as owed.`});
 }
 /** Copies the payment message and offers the client's channels to send it. */
 function requestPayment(o, quiet){
@@ -971,7 +1098,7 @@ function requestPayment(o, quiet){
   const ta = el('textarea','inp'); ta.value = msg; ta.rows = 10; ta.oninput = () => {}; s.body.append(ta);
   s.body.append(button('Copy again','btn small ghost', () => copyText(ta.value).then(() => toast('Copied')), 'copy'));
   if(o._client) s.body.append(contactLinks(o._client, msg));
-  if(!o._client || !(S.data.settings.pay || {}).venmo && !(S.data.settings.pay || {}).paypal && !(S.data.settings.pay || {}).zelle) s.body.append(el('p','note','Tip: save your Venmo, PayPal or Zelle under Money › Payment info so they’re filled in automatically.'));
+  if(!o._client || !(S.data.settings.pay || {}).venmo && !(S.data.settings.pay || {}).paypal && !(S.data.settings.pay || {}).zelle) s.body.append(el('p','note','Tip: save your Venmo, PayPal or Zelle under Sales › More › Settings so they’re filled in automatically.'));
   s.open();
 }
 
@@ -979,7 +1106,8 @@ function requestPayment(o, quiet){
 function itemChoices(){
   const d = S.data;
   return d.plants.filter(p => /^(available|pending|tbd|nfs)$/i.test(p.status)).map(p => ({label:`${p.sku} · ${p.cultivar}${p.var ? ' ' + p.var : ''}${p.stage ? ' (' + p.stage + ')' : ''}`, sku:p.sku, kind:'plant', item:`${p.cultivar}${p.var ? ' ' + p.var : ''}${p.stage ? ' - ' + p.stage.toLowerCase() : ''}`, cultivar:p.cultivar, var:p.var, stage:p.stage, sub:p.sub}))
-    .concat(d.corms.filter(c => !/^sold$/i.test(c.status)).map(c => ({label:`Corm ${c.lot} · ${c.item}${c.qty ? ' (' + c.qty + ' left)' : ''}`, sku:c.lot, kind:'corm', item:`${c.item} - corm`, cultivar:c.common || c.cultivar, var:c.var, stage:'Corm', sub:c.sub, harvest:c.harvest})));
+    .concat(d.corms.filter(c => !/^sold$/i.test(c.status) && !(c._units || []).length).map(c => ({label:`Corm ${c.lot} · ${c.item}${c.qty ? ' (' + c.qty + ' left)' : ''}`, sku:c.lot, kind:'corm', item:`${c.item} - corm`, cultivar:c.common || c.cultivar, var:c.var, stage:'Corm', sub:c.sub, harvest:c.harvest})))
+    .concat((d.units || []).filter(u => !/^sold$/i.test(u.status) && u._lot).map(u => ({label:`Corm ${u.id} · ${u._lot.item} (${u.status || 'no status'})`, sku:u.id, kind:'unit', item:`${u._lot.item} ${u.id} - corm`, cultivar:u._lot.common || u._lot.cultivar, var:u._lot.var, stage:'Corm', sub:u._lot.sub, harvest:u._lot.harvest})));
 }
 function parseInquiryItems(text){
   const ch = itemChoices();
@@ -993,18 +1121,22 @@ function parseInquiryItems(text){
 function orderForm(o, preset, opts){
   const d = S.data, ops = d.options;
   const init = o ? Object.assign({}, o, {lines: o._lines, shipCharge: money(o.shipCharge) || ''}) : Object.assign({status:'Awaiting payment', lines:[{item:'', price:'', units:1}]}, preset || {});
-  const s = sheet(o ? `Edit ${o.id}` : 'New order', o ? '' : 'Pick items from your inventory or type anything. Plants show On hold while the order awaits payment, go HOLD when a deposit is in (status On hold), and are marked SOLD (leaving the catalog) once paid in full; corm lots count down at deposit or payment.');
+  const s = sheet(o ? `Edit ${o.id}` : 'New order');
+  if(!o) s.body.append(infoNote('What happens to the plants', 'Pick items from your inventory or type anything. While an order is owed its plants show On hold on the catalog; with part paid (On hold) they go HOLD; once paid in full they are marked SOLD and leave the catalog. Corm lots count down at part or full payment.'));
   const f = el('form','form'); f.noValidate = true;
-  const field = (label, inp, wide, hint) => { const w = el('label','f' + (wide ? ' wide' : '')); w.append(document.createTextNode(label), inp); if(hint) w.append(el('span','hint', hint)); f.append(w); return inp; };
+  const fold = el('details','fold more'); const foldBox = el('div','form'); const fsm = el('summary'); fsm.append(el('span', null, 'Payment, shipping & notes'), el('span','edit','Show')); fold.append(fsm, foldBox);
+  fold.ontoggle = () => { fsm.lastChild.textContent = fold.open ? 'Hide' : 'Show'; };
+  const field = (label, inp, wide, hint, more) => { const w = el('label','f' + (wide ? ' wide' : '')); w.append(document.createTextNode(label), inp); if(hint) w.append(el('span','hint', hint)); (more ? foldBox : f).append(w); return inp; };
   const mkList = (id, arr) => { const dl = el('datalist'); dl.id = id; arr.forEach(v => { const op = el('option'); op.value = v; dl.append(op); }); f.append(dl); return id; };
   const cust = el('input'); cust.setAttribute('list', mkList('dl-cl', d.clients.map(c => c.name))); cust.value = init._client ? init._client.name : (init.customer || ''); cust.placeholder = 'Client name';
   field('Client *', cust, true, 'Pick an existing client or type a new name; new names are added to Clients.');
   const sel = (choices, v) => { const x = el('select'); choices.forEach(c => { const op = el('option', null, c || '—'); op.value = c; x.append(op); }); if(v && !choices.includes(v)){ const op = el('option', null, v); op.value = v; x.append(op); } x.value = v || ''; return x; };
-  const status = field('Status', sel(ops.orderStatus.filter(x => x !== 'Cancelled'), init.status));
-  const payment = el('input'); payment.setAttribute('list', mkList('dl-pay', ops.payment)); payment.value = init.payment || ''; field('Payment method', payment);
-  const deposit = el('input'); deposit.inputMode = 'decimal'; deposit.placeholder = '$0'; deposit.value = money(init.deposit) || ''; field('Deposit received', deposit, false, 'For On hold orders: what they’ve paid so far');
-  const type = el('input'); type.setAttribute('list', mkList('dl-type', ops.saleType)); type.value = init.type || ''; field('Sale type', type);
-  const platform = el('input'); platform.setAttribute('list', mkList('dl-plat', ops.platform)); platform.value = init.platform || ''; field('Platform / group', platform);
+  const status = field('Status', sel(ops.orderStatus.filter(x => x !== 'Cancelled'), init.status)); [...status.options].forEach(op => { op.textContent = sayOrder(op.value) || '—'; });
+  const deposit = el('input'); deposit.inputMode = 'decimal'; deposit.placeholder = '$0'; deposit.value = money(init.deposit) || ''; field('Paid so far', deposit, false, 'What they’ve paid up front');
+  showWhen(deposit, status, v => v === 'On hold');
+  const payment = el('input'); payment.setAttribute('list', mkList('dl-pay', ops.payment)); payment.value = init.payment || ''; field('Payment method', payment, false, '', true);
+  const type = el('input'); type.setAttribute('list', mkList('dl-type', ops.saleType)); type.value = init.type || ''; field('Sale type', type, false, '', true);
+  const platform = el('input'); platform.setAttribute('list', mkList('dl-plat', ops.platform)); platform.value = init.platform || ''; field('Platform / group', platform, false, '', true);
   // lines: each item is Cultivar + Var-type + Stage + Qty (pick from inventory to fill them, or type them)
   const choices = itemChoices();
   const dlItems = mkList('dl-items', choices.map(c => c.label));
@@ -1040,7 +1172,7 @@ function orderForm(o, preset, opts){
       if(pv && !choices.some(c => c.label === pv)) return pv;      // a non-plant item typed by name, e.g. "Heat pack"
       return gen || rec.base.item || '';
     };
-    const show = () => { const n = rec.name(); nm.replaceChildren(document.createTextNode(n || 'New item'), el('small', null, (Number(un.value) > 1 ? ' × ' + un.value : '') + (rec.sku ? ' · ' + (rec.kind === 'corm' ? 'lot ' : 'SKU ') + rec.sku : ''))); total(); };
+    const show = () => { const n = rec.name(); nm.replaceChildren(document.createTextNode(n || 'New item'), el('small', null, (Number(un.value) > 1 ? ' × ' + un.value : '') + (rec.sku ? ' · ' + (rec.kind === 'corm' ? 'lot ' : rec.kind === 'unit' ? 'corm ' : 'SKU ') + rec.sku : ''))); total(); };
     const edit = () => { rec.dirty = true; show(); };
     [cu, va].forEach(i => i.addEventListener('input', edit)); sg.addEventListener('change', edit);
     un.addEventListener('input', show); pr.addEventListener('input', total);
@@ -1074,9 +1206,10 @@ function orderForm(o, preset, opts){
   const more = button('Add item','btn small ghost addline', () => addLine({}, true), 'plus');
   lw.append(more, sumRow); total();
   if(opts && opts.addLine){ addLine({}, true); setTimeout(() => { const r = lines[lines.length-1].row; r.scrollIntoView({block:'center'}); r.querySelector('.s3 input').focus({preventScroll:true}); }, 60); }
-  const shipCharge = el('input'); shipCharge.inputMode = 'decimal'; shipCharge.placeholder = '$0'; shipCharge.value = init.shipCharge || ''; field('Shipping charged', shipCharge);
-  const shipBy = el('input'); shipBy.type = 'date'; shipBy.value = init.shipBy ? iso(parseD(init.shipBy)) : ''; field('Ship by', shipBy, false, 'Blank = ' + (d.settings.shipDays || 3) + ' days after paid');
-  const notes = el('textarea'); notes.value = init.notes || ''; field('Notes', notes, true);
+  const shipCharge = el('input'); shipCharge.inputMode = 'decimal'; shipCharge.placeholder = '$0'; shipCharge.value = init.shipCharge || ''; field('Shipping charged', shipCharge, false, '', true);
+  const shipBy = el('input'); shipBy.type = 'date'; shipBy.value = init.shipBy ? iso(parseD(init.shipBy)) : ''; field('Ship by', shipBy, false, 'Blank = ' + (d.settings.shipDays || 3) + ' days after paid', true);
+  const notes = el('textarea'); notes.value = init.notes || ''; field('Notes', notes, true, '', true);
+  f.append(fold);
   s.body.append(f);
   const err = el('p','err'); err.hidden = true; const save = button(o ? 'Save order' : 'Create order','btn', null); s.foot.append(err, save);
   s.close = s.open();
@@ -1103,6 +1236,29 @@ function orderForm(o, preset, opts){
     catch(e){ err.textContent = e.message; err.hidden = false; save.disabled = false; save.textContent = o ? 'Save order' : 'Create order'; }
   };
 }
+
+/** "Sold": the quickest way to record a sale of one plant, lot or corm. It makes a one-item order, so the
+ *  inventory, catalog, sales log and client all update the same way a full order does. */
+function quickSold(choice){
+  const d = S.data;
+  const f = form('Sold: ' + choice.item, [
+    ['customer','Who bought it','list',{choices:d.clients.map(c => c.name), required:true, wide:true}],
+    ['price','Price','money',{required:true}],
+    ['status','Paid?','select',{choices:['Paid','On hold','Awaiting payment'], say: v => ({'Paid':'Paid in full', 'On hold':'Part paid (hold)', 'Awaiting payment':'Not paid yet'})[v]}],
+    ['deposit','Paid so far','money'],
+    ['platform','Platform','list',{choices:d.options.platform, more:true}],
+    ['payment','Payment method','list',{choices:d.options.payment, more:true}],
+    ['shipCharge','Shipping charged','money',{more:true}],
+  ], {status:'Paid'}, v => {
+    if(!(money(v.price) > 0)) throw new Error('Enter the price.');
+    if(v.status === 'On hold' && !(money(v.deposit) > 0 && money(v.deposit) < money(v.price))) throw new Error('Enter what they’ve paid so far (less than the price).');
+    const c = d.clients.find(x => low(x.name) === low(v.customer));
+    return api('saveOrder', {customer:v.customer, clientId: c ? c.id : '', status:v.status, deposit: v.status === 'On hold' ? v.deposit : '', platform:v.platform, payment:v.payment, shipCharge:v.shipCharge,
+      lines:[{sku:choice.sku, kind:choice.kind, item:choice.item, cultivar:choice.cultivar, var:choice.var, stage:choice.stage, sub:choice.sub || '', harvest:choice.harvest || '', price:v.price, units:1}]});
+  }, {done: r => `Sold · ${r.id}`, saveLabel:'Record sale'});
+  showWhen(f.inputs.deposit, f.inputs.status, v => v === 'On hold');
+}
+const soldButton = choice => { const b = button('Sold','btn sold', () => quickSold(choice), 'tag'); b.title = 'Record a sale of this item'; return b; };
 
 function trackingForm(o){
   const ops = S.data.options;
@@ -1183,7 +1339,7 @@ function weatherSheet(o){
       box.append(head);
       const g = el('div','wx'); w.days.forEach(x => { const c2 = el('div'); c2.append(el('b', null, `${x.min}°–${x.max}°`), document.createTextNode(fmtD(parseD(x.date)))); g.append(c2); }); box.append(g);
       const st = S.data.settings.weather || {};
-      box.append(el('p','note', `Rules: heat pack below ${st.heatPackBelow}°F lows, hold below ${st.holdBelow}°F or above ${st.holdAbove}°F. Change them in Money › Payment info & settings.`));
+      box.append(el('p','note', `Rules: heat pack below ${st.heatPackBelow}°F lows, hold below ${st.holdBelow}°F or above ${st.holdAbove}°F. Change them in Sales › More › Settings.`));
       load();
     }catch(e){ box.replaceChildren(el('p','err', e.message)); }
   };
@@ -1191,10 +1347,11 @@ function weatherSheet(o){
   s.open();
   if(c && c.zip) run();
 }
+/* JsInventory.html: plants, corm lots, individual corms, photo viewer, care, coming soon. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ---------- Inventory ---------- */
 function viewInventory(m){
   const d = S.data;
-  const tab = subtabs(m, 'inv', [['plants','Plants'],['corms','Corm lots'],['care','Care', d.care.filter(c => c._overdue).length + d.repotDue.length],['coming','Coming soon', d.coming.length]]);
+  const tab = subtabs(m, 'inv', [['plants','Plants'],['corms','Corm lots'],['care','Care', d.care.filter(c => c._overdue).length + d.repotDue.length],['coming','Coming soon', d.coming.length + d.plants.filter(p => p.coming && p._active).length + d.corms.filter(c => c.coming && c._active).length + d.units.filter(u => u.coming && !/^sold$/i.test(u.status)).length]]);
   ({plants:viewStock, corms:viewStock, care:viewCare, coming:viewComing})[tab](m);
 }
 function plantRow(p){
@@ -1209,7 +1366,8 @@ function plantRow(p){
 function cormRow(c){
   const b = el('button','row'); b.type='button';
   const par = c._parent && S.data.byPlant[c._parent];
-  b.append(par && par._media && par._media.cover ? photo(par._media.cover, 160, 'thumb') : el('div','ph', c.lot));
+  const cov = (c._media && c._media.cover) || (par && par._media && par._media.cover);
+  b.append(cov ? photo(cov, 160, 'thumb') : el('div','ph', c.lot));
   const mid = el('div'); mid.append(el('div','t', c.item), el('div','m', [c.qty ? c.qty + ' corms' : '', c.var, c.harvest ? 'Harvested ' + c.harvest : '', c._parent ? 'from ' + c._parent : ''].filter(Boolean).join(' · ')));
   const r = el('div','r'); r.append(el('span','sku', 'Lot ' + c.lot), statusPill(c.status));
   b.append(mid, r); b.onclick = () => cormSheet(c);
@@ -1218,31 +1376,58 @@ function cormRow(c){
 function viewStock(m){
   const d = S.data, kind = S.inv;
   const tb = el('div','toolbar');
-  const search = el('input','search'); search.type='search'; search.placeholder = kind==='plants' ? 'Search SKU, cultivar, var-type' : 'Search lot, item, cultivar'; search.value = S.q;
+  const search = el('input','search'); search.type='search'; search.placeholder = kind==='plants' ? 'Search SKU, cultivar, var-type' : 'Search lot, sub-SKU, item, cultivar'; search.value = S.q;
   const add = el('div','addbar');
   add.append(button(kind==='plants' ? 'New plant' : 'New corm lot','btn small', () => kind==='plants' ? plantForm() : cormForm(), 'plus'));
-  if(kind==='plants') add.append(button('Photos','btn small ghost', () => openUpload(), 'camera'));
+  add.append(button('Photos','btn small ghost', () => openUpload(), 'camera'));
   tb.append(search, add);
   const items = kind==='plants' ? d.plants : d.corms;
-  const statuses = kind==='plants' ? ['Available','Pending','HOLD','NFS','TBD','SOLD','All','nophoto'] : ['Available','Pending','HOLD','NFS','TBD','SOLD','All'];
-  const label = {nophoto:'No photos', All:'All'};
+  // "All" comes first so the full inventory is one tap away; the last choice is remembered.
+  const statuses = ['All','Available','Pending','HOLD','NFS','TBD','SOLD','coming'].concat(kind==='plants' ? ['nophoto'] : []);
+  const label = {nophoto:'No photos', coming:'Coming soon', All:'All'};
+  const test = (x, st) => st==='All' ? true : st==='nophoto' ? (x._active && !x._media) : st==='coming' ? (x.coming || (x._units || []).some(u => u.coming)) : low(x.status)===low(st);
+  if(!statuses.includes(S.pStatus)) S.pStatus = 'All';
   const chips = el('div','chips');
-  const test = (x, st) => st==='All' ? true : st==='nophoto' ? (x._active && !x._media) : low(x.status)===low(st);
-  if(!statuses.includes(S.pStatus)) S.pStatus = 'Available';
-  statuses.forEach(st => { const b = el('button','chip', label[st] || st); b.type='button'; b.append(el('span','ct', String(items.filter(x => test(x, st)).length))); b.setAttribute('aria-pressed', String(S.pStatus===st)); b.onclick = () => { S.pStatus = st; render(); }; chips.append(b); });
-  tb.append(chips); m.append(tb);
+  statuses.forEach(st => { const b = el('button','chip', label[st] || say(st)); b.type='button'; b.append(el('span','ct', String(items.filter(x => test(x, st)).length))); b.setAttribute('aria-pressed', String(S.pStatus===st)); b.onclick = () => { S.pStatus = st; saveUi(); render(); }; chips.append(b); });
+  tb.append(chips);
+  // Corms: narrow by cultivar and var-type (lots are listed by cultivar, not lot number).
+  const cvOf = c => c.common || c.cultivar || c.item;
+  if(kind === 'corms'){
+    const cvs = [...new Set(d.corms.map(cvOf).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    const vars = [...new Set(d.corms.map(c => c.var).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    if(S.cormCv && !cvs.includes(S.cormCv)) S.cormCv = '';
+    if(S.cormVar && !vars.includes(S.cormVar)) S.cormVar = '';
+    // one compact row: cultivar and var-type pickers side by side
+    const mk = (label, list, key, any) => { const s = el('select'); s.setAttribute('aria-label', label); s.name = key;
+      [['', any]].concat(list.map(v => [v, v])).forEach(([v, l]) => { const o = el('option', null, l); o.value = v; s.append(o); });
+      s.value = S[key]; s.onchange = () => { S[key] = s.value; saveUi(); draw(); }; return s; };
+    const pr = el('div','pickrow'); pr.append(mk('Cultivar', cvs, 'cormCv', 'All cultivars'), mk('Var-type', vars, 'cormVar', 'Any var-type'));
+    tb.append(pr);
+  }
+  m.append(tb);
   const box = el('div'); m.append(box);
   const draw = () => {
     const q = low(S.q);
     let list = items.filter(x => test(x, S.pStatus));
-    if(q) list = list.filter(x => Object.values(x).filter(v => typeof v === 'string').join(' ').toLowerCase().includes(q));
-    list.sort((a,b) => kind==='plants' ? (a.cultivar.localeCompare(b.cultivar) || a.sku.localeCompare(b.sku)) : b.lot.localeCompare(a.lot));
+    if(kind === 'corms'){
+      if(S.cormCv) list = list.filter(c => cvOf(c) === S.cormCv);
+      if(S.cormVar) list = list.filter(c => c.var === S.cormVar);
+    }
+    if(q) list = list.filter(x => (Object.values(x).filter(v => typeof v === 'string').join(' ') + ' ' + (x._units || []).map(u => u.id).join(' ')).toLowerCase().includes(q));
     box.replaceChildren();
     const all = invItems(), ids = new Set(list.map(x => kind==='plants' ? x.sku : x.lot));
     const rows = all.filter(x => (kind==='plants' ? x.kind === 'Plant' : x.kind === 'Corm') && ids.has(x.id));
     const p = panel(kind==='plants' ? plural(rows.length, 'plant') : `${plural(rows.length, 'lot')} · ${rows.reduce((a, x) => a + x.qty, 0)} corms`); p.body.classList.add('flush');
-    p.body.append(dataTable({id:'stock-' + kind, cols: kind==='plants' ? INV_COLS.filter(c => c.k !== 'kind') : INV_COLS.filter(c => c.k !== 'kind' && c.k !== 'photos'), rows, onOpen:invOpen, card:INV_CARD, sort: kind==='plants' ? {k:'cultivar', dir:1} : {k:'id', dir:-1}, inPanel:true, empty:'Nothing here.'}));
+    p.body.append(dataTable({id:'stock-' + kind, cols: INV_COLS.filter(c => c.k !== 'kind'), rows, onOpen:invOpen, card:INV_CARD, sort:{k:'cultivar', dir:1}, inPanel:true, empty:'Nothing here.'}));
     box.append(p);
+    // counts by cultivar + var-type, folded away (corm lots count each corm)
+    if(rows.length > 1){
+      const g = {}; rows.forEach(x => { const k = x.var ? `${x.cultivar} (${x.var})` : x.cultivar || '(none)'; g[k] = (g[k] || 0) + (x.kind === 'Corm' ? x.qty : 1); });
+      const arr = Object.entries(g).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+      const fd = el('details','fold counts'); const sm = el('summary'); sm.append(el('span', null, `Counts by cultivar · ${arr.length}`), el('span','edit','Show')); fd.append(sm);
+      fd.ontoggle = () => { sm.lastChild.textContent = fd.open ? 'Hide' : 'Show'; if(fd.open && fd.children.length === 1) fd.append(hBars(arr, v => String(v), 0)); };
+      box.append(fd);
+    }
   };
   search.oninput = () => { S.q = search.value; draw(); };
   draw();
@@ -1284,21 +1469,21 @@ function plantSheet(p){
   hero.append(p._media && p._media.cover ? photo(p._media.cover, 300) : el('div','ph', p.sku));
   const hm = el('div'); hm.append(el('div','sku', 'SKU ' + p.sku), statusPill(p.status)); hero.append(hm);
   s.body.append(hero);
+  const pc = !/^sold$/i.test(p.status) && itemChoices().find(c => c.kind==='plant' && c.sku===p.sku);
+  if(pc) s.body.append(soldButton(pc));
   const st = el('div','statusrow');
-  d.options.plantStatus.forEach(v => { const b = el('button','chip', v); b.type='button'; b.setAttribute('aria-pressed', String(low(p.status)===low(v))); b.onclick = async () => {
+  d.options.plantStatus.forEach(v => { const b = el('button','chip', say(v)); b.type='button'; b.setAttribute('aria-pressed', String(low(p.status)===low(v))); b.onclick = async () => {
     if(v==='SOLD' && !confirm(`Mark ${p.sku} as SOLD? It leaves the customer catalog. Tip: an order marks it sold for you once it’s paid, and logs the sale.`)) return;
     b.disabled = true; try{ await api('setPlantStatus', p.sku, v); toast(`${p.sku} set to ${v}`); s.close(); await load(); }catch(e){ toast(e.message, true); b.disabled = false; } }; st.append(b); });
   s.body.append(st);
+  s.body.append(comingToggle('plants', p.sku, p.coming));
   s.body.append(kv([['Stage',p.stage],['Species',p.species],['Parent / source',p.parent],['Sub-code',p.sub],['Genus',p.genus],['Common name',p.common],['Repot dates',p.repot]]));
   const act = el('div','actions');
   act.append(button('Add photos','btn leaf', () => openUpload(p.sku), 'camera'), button('Log repot','btn ghost', () => repotForm(p.sku), 'pot'),
     button('New order','btn ghost', () => orderForm(null, {lines:[itemChoices().find(c => c.kind==='plant' && c.sku===p.sku) || {item:p.cultivar}]}), 'box'), button('Edit details','btn ghost', () => plantForm(p), 'leaf'));
   s.body.append(act);
   s.body.append(lineageBlock(p), demandBlock(p), moneyBlock(p.sku));
-  const gh = el('h2','sec','Photos & videos'); s.body.append(gh);
-  const g = el('div','gallery'); s.body.append(g);
-  if(p._media){ g.append(el('div','m','Loading…')); api('listMedia', p.sku).then(list => { g.replaceChildren(); gh.append(el('small', null, `${list.length}`)); list.forEach(f => { const a = el('a'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; a.append(photo(f.id, 300)); if(f.k==='video') a.append(el('span','v','VIDEO')); g.append(a); }); }).catch(e => { g.replaceChildren(el('div','m', e.message)); }); }
-  else g.append(el('div','empty','No photos yet.'));
+  s.body.append(galleryBlock(p.sku, p._media, `${p.cultivar}${p.var ? ' ' + p.var : ''}`));
   const sales = d.sales.filter(x => x.sku === p.sku);
   if(sales.length){ s.body.append(el('h2','sec','Sales')); listOf(s.body, sales, saleRow, '', false); }
   const reps = d.repots.filter(r => r.sku === p.sku);
@@ -1306,15 +1491,161 @@ function plantSheet(p){
   s.close = s.open();
 }
 function cormSheet(c){
-  const s = sheet(c.item, `Lot ${c.lot} · ${c.status || 'No status'}${c.qty ? ' · ' + c.qty + ' corms' : ''}`);
+  const d = S.data;
+  const s = sheet(c.item, `Lot ${c.lot} · ${say(c.status) || 'No status'}${c.qty ? ' · ' + c.qty + ' corms' : ''}`);
+  const par = c._parent && d.byPlant[c._parent];
+  const cov = c._media && c._media.cover ? c._media.cover : par && par._media && par._media.cover;
+  if(cov){ const hero = el('div','hero'); hero.append(photo(cov, 300)); const hm = el('div'); hm.append(el('div','sku', 'Lot ' + c.lot), statusPill(c.status)); hero.append(hm); s.body.append(hero); }
+  const lc = itemChoices().find(x => x.kind==='corm' && x.sku===c.lot);   // lots with listed corms sell corm by corm
+  if(lc) s.body.append(soldButton(lc));
+  const st = el('div','statusrow');
+  (d.options.cormStatus || d.options.plantStatus).forEach(v => { const b = el('button','chip', say(v)); b.type='button'; b.setAttribute('aria-pressed', String(low(c.status)===low(v))); b.onclick = async () => {
+    b.disabled = true; try{ await api('saveCorm', {row:c.row, lot:c.lot, item:c.item, status:v}); toast(`Lot ${c.lot} set to ${v}`); s.close(); await load(); }catch(e){ toast(e.message, true); b.disabled = false; } }; st.append(b); });
+  s.body.append(st);
+  s.body.append(comingToggle('corms', c.lot, c.coming));
   s.body.append(kv([['Cultivar', c.common || ''], ['Species', c.cultivar], ['Var-type', c.var], ['Sub-code', c.sub], ['Harvested', c.harvest], ['Parent / source', c.parent], ['Notes', c.notes]]));
   const act = el('div','actions');
-  act.append(button('Edit lot','btn ghost', () => cormForm(c), 'leaf'), button('New order','btn ghost', () => orderForm(null, {lines:[itemChoices().find(x => x.kind==='corm' && x.sku===c.lot) || {item:c.item}]}), 'box'));
+  act.append(button('Add photos','btn leaf', () => openUpload('LOT ' + c.lot), 'camera'), button('Edit lot','btn ghost', () => cormForm(c), 'leaf'),
+    button('New order','btn ghost', () => orderForm(null, {lines:[itemChoices().find(x => x.kind==='corm' && x.sku===c.lot) || {item:c.item}]}), 'box'));
   s.body.append(act);
+  s.body.append(unitsBlock(c, s));
+  s.body.append(galleryBlock('LOT ' + c.lot, c._media, c.item));
   s.body.append(lineageBlock(c), demandBlock(c), moneyBlock(c.lot));
-  const sales = S.data.sales.filter(x => x.sku === c.lot && /corm/i.test(x.stage));
+  const sales = d.sales.filter(x => (x.sku === c.lot && /corm/i.test(x.stage)) || c._units.some(u => u.id === x.sku));
   if(sales.length){ s.body.append(el('h2','sec','Sales')); listOf(s.body, sales, saleRow, '', false); }
   s.close = s.open();
+}
+
+/* Individual corms inside a lot: one line each, with its own photo, sub-SKU and status. */
+function unitPill(st){ const k = low(st); return el('span','pill ' + (k==='available' ? 'ok' : k==='auction' ? 'info' : k==='pending' || k==='hold' ? 'warn' : k==='sold' ? 'info' : ''), say(st) || 'No status'); }
+function unitRow(u, c){
+  const b = el('button','row'); b.type = 'button';
+  b.append(u.photo ? photo(u.photo, 160, 'thumb') : el('div','ph', u.id.replace(/^.*-/, '')));
+  const mid = el('div'); mid.append(el('div','t', u.id), el('div','m', [u.coming ? 'Coming soon' : '', u.notes].filter(Boolean).join(' · ') || ' '));
+  const r = el('div','r'); r.append(unitPill(u.status));
+  b.append(mid, r); b.onclick = () => unitForm(u, c);
+  return b;
+}
+function unitsBlock(c){
+  const w = el('div'); const h = el('h2','sec','Corms'); h.append(el('small', null, c._units.length ? `${c._units.filter(u => !/^sold$/i.test(u.status)).length} in the lot` : '')); w.append(h);
+  const bar = el('div','addbar');
+  if(!c._units.length){
+    w.append(infoNote('Why list corms one by one?', 'List each corm to give it its own photo, sub-SKU and status. The lot’s Qty then counts them for you (everything not sold).'));
+    const n = parseInt(c.qty, 10) || 0;
+    if(n) bar.append(button(`List all ${n} corms`,'btn small leaf', () => unitBatchForm(c, n), 'list'));
+  }
+  bar.append(button('Add a corm','btn small' + (c._units.length ? ' leaf' : ' ghost'), () => unitForm(null, c), 'plus'));
+  if(c._units.length) bar.append(button('Add several','btn small ghost', () => unitBatchForm(c, 1), 'list'));
+  w.append(bar);
+  if(c._units.length){
+    const l = el('div','list'); l.style.marginTop = '8px';
+    c._units.slice().sort((a, b) => (/^sold$/i.test(a.status) - /^sold$/i.test(b.status)) || a.id.localeCompare(b.id, undefined, {numeric:true})).forEach(u => l.append(unitRow(u, c)));
+    w.append(l);
+  }
+  return w;
+}
+function nextUnitId(prefix){
+  prefix = String(prefix || 'B').trim().replace(/-+$/, '') || 'B';
+  const re = new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-(\\d+)$', 'i');
+  const max = (S.data.units || []).reduce((m, u) => { const x = String(u.id).match(re); return x ? Math.max(m, +x[1]) : m; }, 0);
+  return prefix + '-' + String(max + 1).padStart(4, '0');
+}
+function unitBatchForm(c, n){
+  const o = S.data.options;
+  form(`Add corms to lot ${c.lot}`, [
+    ['count','How many','number',{required:true}],
+    ['prefix','Sub-SKU letters','text',{placeholder:'e.g. B', hint:'They’re numbered on from the last one, e.g. ' + nextUnitId(o.unitPrefix)}],
+    ['status','Status','select',{choices:o.unitStatus}],
+  ], {count:n, prefix:o.unitPrefix || 'B', status:/^available$/i.test(c.status) ? 'Available' : 'NFS'},
+  v => api('addCormUnits', c.lot, v.count, v.prefix, v.status),
+  {done: r => `Added ${r.ids.length} corm${r.ids.length === 1 ? '' : 's'}: ${r.ids[0]}${r.ids.length > 1 ? ' – ' + r.ids[r.ids.length - 1] : ''}`, saveLabel:'Add corms',
+   lead:'Each gets its own line under Corms, where you can add a photo or change its sub-SKU and status.'});
+}
+function unitForm(u, c){
+  const o = S.data.options;
+  const pick = mediaPicker(false, 'Corm photo');
+  const f = form(u ? `Corm ${u.id}` : `New corm in lot ${c.lot}`, [
+    ['newId','Sub-SKU','text',{required:true, placeholder:'e.g. B-0124', hint: u ? '' : 'Suggested next number; change it if you like.'}],
+    ['status','Status','select',{choices:o.unitStatus}],
+    ['link','Auction link','text',{wide:true, placeholder:'https://…', hint:'Customers get a “View auction” button for this corm.'}],
+    ['coming','Coming soon (shows on the catalog with Notify me)','check'],
+    ['notes','Notes','area',{more:true}],
+  ], u ? {newId:u.id, status:u.status, link:u.link, coming:u.coming, notes:u.notes} : {newId:nextUnitId(o.unitPrefix), status:/^available$/i.test(c.status) ? 'Available' : 'NFS'},
+  v => api('saveCormUnit', {id: u ? u.id : '', newId: v.newId, lot: c.lot, status: v.status, link: /^auction$/i.test(v.status) ? v.link : '', notes: v.notes, coming: v.coming, prefix: v.newId.replace(/-?\d+$/, '')}),
+  {done: r => u ? 'Saved' : `Added ${r.id}`, after: async r => { const files = pick.files(); if(files.length) await uploadTo('LOT ' + c.lot, files, r.id); }});
+  showWhen(f.inputs.link, f.inputs.status, v => /^auction$/i.test(v));
+  if(u && u.photo){ const cur = el('div','addbar'); const t = photo(u.photo, 160, 'thumb'); const b = button('View photo','btn small ghost', () => viewer([{id:u.photo, k:'photo'}], 0, u.id), 'camera'); cur.append(t, b); f.body.append(cur); }
+  f.body.append(pick.el);
+  const uc = u && itemChoices().find(x => x.kind==='unit' && x.sku===u.id);
+  if(uc) f.foot.prepend(button('Sold','btn ghost', () => { f.close(); quickSold(uc); }, 'tag'));
+  if(u && !/^sold$/i.test(u.status)) f.foot.append(button('Delete','btn danger', async () => { if(!confirm(`Delete ${u.id}? Use this for mistakes; sold corms stay as records.`)) return; try{ await api('deleteCormUnit', u.id); f.close(); toast('Deleted'); await load(); }catch(e){ toast(e.message, true); } }));
+}
+
+/** "Coming soon" checkbox for a plant, lot or corm. It shows on the catalog with Notify me, and clears itself once the item is Available. */
+function comingToggle(kind, id, on){
+  const w = el('label','f check'); w.style.marginTop = '10px';
+  const cb = el('input'); cb.type = 'checkbox'; cb.checked = !!on;
+  const txt = el('span', null, 'Coming soon');
+  const hint = el('span','hint', ' · shows on the catalog with “Notify me”; clears itself when it’s Available');
+  txt.append(hint);
+  cb.onchange = async () => {
+    cb.disabled = true;
+    try{ await api('setComing', kind, id, cb.checked); toast(cb.checked ? 'Added to Coming soon' : 'Removed from Coming soon'); load(); }
+    catch(e){ cb.checked = !cb.checked; toast(e.message, true); }
+    cb.disabled = false;
+  };
+  w.append(cb, txt);
+  return w;
+}
+
+/* Photos & videos: thumbnails open the in-app viewer (no trip to Google Drive). */
+function galleryBlock(key, media, title){
+  const w = el('div'); const gh = el('h2','sec','Photos & videos'); w.append(gh);
+  const g = el('div','gallery'); w.append(g);
+  if(!media){ g.append(el('div','empty','No photos yet.')); return w; }
+  g.append(el('div','m','Loading…'));
+  api('listMedia', key).then(list => {
+    g.replaceChildren(); gh.append(el('small', null, `${list.length}`));
+    list.forEach((f, i) => { const b = el('button','gi'); b.type = 'button'; b.setAttribute('aria-label', `Open ${f.k} ${i + 1}`); b.append(photo(f.id, 300)); if(f.k==='video') b.append(el('span','v','VIDEO')); b.onclick = () => viewer(list, i, title); g.append(b); });
+  }).catch(e => { g.replaceChildren(el('div','m', e.message)); });
+  return w;
+}
+/** Full-screen viewer: swipe or arrow through photos; videos play right here. */
+function viewer(items, start, title){
+  const prev = document.activeElement;
+  const wrap = el('div','viewer'); wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true'); wrap.setAttribute('aria-label', (title || 'Photos') + ' viewer');
+  const top = el('div','vbar'); const count = el('span','vcount'); const x = el('button','vclose','×'); x.type = 'button'; x.setAttribute('aria-label','Close');
+  top.append(el('span','vtitle2', title || ''), count, x);
+  const strip = el('div','vstrip');
+  // A video shows its poster with a play button; Drive's player loads only when tapped, inside the app.
+  const playBtn = m => {
+    const b = el('button','vplay'); b.type = 'button'; b.setAttribute('aria-label','Play video');
+    b.append(photo(m.id, 1200), el('span','vpi'));
+    b.onclick = () => {
+      const f = el('iframe'); f.src = 'https:' + '//drive.google.com/file/d/' + encodeURIComponent(m.id) + '/preview';
+      f.setAttribute('sandbox','allow-scripts allow-same-origin allow-presentation');   // plays here; Drive's "open" button can't pop out
+      f.allow = 'autoplay; fullscreen'; f.title = 'Video'; b.replaceWith(f);
+    };
+    return b;
+  };
+  items.forEach(m => { const sl = el('div','vslide'); sl.append(m.k === 'video' ? playBtn(m) : photo(m.id, 1600)); strip.append(sl); });
+  const nav = d => strip.scrollBy({left: d * strip.clientWidth, behavior:'smooth'});
+  const pb = el('button','vnav vprev','‹'), nb = el('button','vnav vnext','›'); pb.type = nb.type = 'button';
+  pb.setAttribute('aria-label','Previous'); nb.setAttribute('aria-label','Next'); pb.onclick = () => nav(-1); nb.onclick = () => nav(1);
+  let cur = -1;
+  const upd = () => {
+    const i = Math.min(items.length - 1, Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth)));
+    count.textContent = `${i + 1} / ${items.length}`;
+    if(i === cur) return; cur = i;
+    [...strip.children].forEach((sl, j) => { if(j !== i && sl.querySelector('iframe')) sl.replaceChildren(playBtn(items[j])); });   // swiping away stops a video
+  };
+  strip.addEventListener('scroll', upd, {passive:true});
+  const close = () => { wrap.remove(); document.removeEventListener('keydown', key); if(prev && prev.focus) prev.focus(); };
+  const key = e => { if(e.key === 'Escape') close(); if(e.key === 'ArrowRight') nav(1); if(e.key === 'ArrowLeft') nav(-1); };
+  x.onclick = close; document.addEventListener('keydown', key);
+  wrap.append(top, strip); if(items.length > 1) wrap.append(pb, nb);
+  document.body.append(wrap);
+  requestAnimationFrame(() => { strip.scrollLeft = start * strip.clientWidth; upd(); x.focus(); });
 }
 
 /* Care */
@@ -1365,9 +1696,21 @@ function comingRow(c){
   return b;
 }
 function viewComing(m){
+  const d = S.data;
+  m.append(infoNote('How Coming soon works', 'These show on your customer catalog under “Coming soon!!” with a Notify me button; requests land on your Waitlist. Tick “Coming soon” on any plant, lot or corm to add it here. It leaves by itself once it’s Available, and the Waitlist shows who to contact.'));
+  const ticked = d.plants.filter(p => p.coming && p._active).map(p => ({k:'plants', id:p.sku, t:`${p.cultivar}${p.var ? ' ' + p.var : ''}`, m:['SKU ' + p.sku, p.stage, p.status].filter(Boolean).join(' · '), cover:p._media && p._media.cover, open:() => plantSheet(p)}))
+    .concat(d.corms.filter(c => c.coming && c._active).map(c => ({k:'corms', id:c.lot, t:c.item, m:['Lot ' + c.lot, c.qty ? c.qty + ' corms' : '', c.status].filter(Boolean).join(' · '), cover:c._media && c._media.cover, open:() => cormSheet(c)})))
+    .concat(d.units.filter(u => u.coming && u._lot && !/^sold$/i.test(u.status)).map(u => ({k:'units', id:u.id, t:`${u._lot.item} · ${u.id}`, m:['Corm in lot ' + u.lot, u.status].filter(Boolean).join(' · '), cover:u.photo, open:() => unitForm(u, u._lot)})));
+  m.append(el('h2','sec','Ticked in your inventory'));
+  listOf(m, ticked, x => {
+    const b = el('div','row'); b.append(x.cover ? photo(x.cover, 160, 'thumb') : el('div','ph','Soon'));
+    const mid = el('button','linkish'); mid.type = 'button'; mid.append(el('div','t', x.t), el('div','m', x.m)); mid.onclick = x.open;
+    const r = el('div','r'); r.append(button('Remove','btn tiny ghost', async () => { try{ await api('setComing', x.k, x.id, false); toast('Removed from Coming soon'); await load(); }catch(e){ toast(e.message, true); } }));
+    b.append(mid, r); return b;
+  }, 'Nothing ticked yet. Open a plant, lot or corm and tick “Coming soon”.');
+  m.append(el('h2','sec','Written in by hand'));
   const add = el('div','addbar'); add.append(button('Add coming soon','btn small', () => comingForm(), 'plus')); m.append(add);
-  m.append(el('p','note','These show on your customer catalog under “Coming soon!!” with a Notify me button. Requests land on your Waitlist.'));
-  listOf(m, S.data.coming, comingRow, 'Nothing coming soon yet.');
+  listOf(m, d.coming, comingRow, 'Use this for things not in your inventory yet, like an incoming order.');
 }
 function comingForm(c){
   const o = S.data.options;
@@ -1383,6 +1726,7 @@ function comingForm(c){
   if(c){ const del = button('Delete','btn danger', async () => { if(!confirm('Remove this from Coming soon?')) return; try{ await api('deleteRecord','coming', c.id); f.close(); toast('Removed'); await load(); }catch(e){ toast(e.message, true); } }); f.foot.append(del); }
 }
 
+/* JsClients.html: inquiries, clients, waitlist. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ---------- Clients ---------- */
 function viewClients(m){
   const d = S.data;
@@ -1404,7 +1748,7 @@ function viewInquiries(m){
   const tb = el('div','toolbar');
   const add = el('div','addbar'); add.append(button('Log inquiry','btn small', () => inquiryForm(), 'plus'));
   tb.append(add, chipRow('inqTab', tabs, d.inquiries)); m.append(tb);
-  m.append(el('p','note','Catalog inquiries arrive here automatically. Log Messenger, Instagram, text or in-person ones with “Log inquiry”. When it’s settled, mark it Completed (they bought) or Prospective (they passed for now) and they’re filed under Clients.'));
+  m.append(infoNote('How inquiries work', 'Catalog inquiries arrive here automatically. Log Messenger, Instagram, text or in-person ones with “Log inquiry”. When it’s settled, mark it Completed (they bought) or Prospective (they passed for now) and they’re filed under Clients.'));
   listOf(m, d.inquiries.filter(tabs[S.inqTab][1]).sort((a,b)=>(b._d||0)-(a._d||0)), inquiryRow, d.inquiries.length ? 'Nothing here.' : 'No inquiries yet.');
 }
 function inquirySheet(q){
@@ -1435,25 +1779,26 @@ function inquiryForm(q){
     ['name','Name','text'],
     ['instagram','Instagram handle','text',{placeholder:'@handle'}],
     ['facebook','Facebook / Messenger','text',{placeholder:'Name or profile link'}],
-    ['email','Email','text'],
-    ['other','Other contact','text',{placeholder:'Phone, Palmstreet name…'}],
+    ['email','Email','text',{more:true}],
+    ['other','Other contact','text',{more:true, placeholder:'Phone, Palmstreet name…'}],
     ['items','What they’re after','area',{placeholder:'One per line, e.g. [0026] - Metallic Blue Albo'}],
-    ['message','What they asked','area'],
-    ['notes','Your notes','area'],
+    ['message','What they asked','area',{more:true}],
+    ['notes','Your notes','area',{more:true}],
   ], q || {channel:'Messenger'}, v => api('saveInquiry', Object.assign({}, v, q ? {row:q._row} : {})), {done: () => q ? 'Saved' : 'Inquiry logged'});
 }
 
+const owedPill = c => el('span','pill warn', (c._hold ? 'On hold · ' : 'Owes ') + fmt$(c._owed) + (c._hold ? ' owed' : ''));
 function clientRow(c){
   const b = el('button','row noicon'); b.type='button';
   const mid = el('div'); mid.append(el('div','t', c.name || '(no name)'), el('div','m', [c.preferred, c._done ? plural(c._done, 'order') + ' · ' + fmt$(c._spent) : c._orders.length ? plural(c._orders.length, 'open order') : '', c._lastD ? 'last ' + fmtD(c._lastD) : ''].filter(Boolean).join(' · ')));
-  const r = el('div','r'); r.append(el('span','pill ' + (c.status==='Established' ? 'ok' : ''), c.status || 'Client'));
+  const r = el('div','r'); r.append(c._owed ? owedPill(c) : el('span','pill ' + (c.status==='Established' ? 'ok' : ''), c.status || 'Client'));
   if(c._waits.some(w => w._matches.length)) r.append(el('span','pill alert','Match'));
   b.append(mid, r); b.onclick = () => clientSheet(c);
   return b;
 }
 function viewClientList(m){
   const d = S.data;
-  const tabs = {all:['All', () => true], est:['Established', c => c.status==='Established'], pro:['Prospects', c => c.status!=='Established']};
+  const tabs = {all:['All', () => true], owes:['Owes you', c => c._owed > 0], est:['Established', c => c.status==='Established'], pro:['Prospects', c => c.status!=='Established']};
   const tb = el('div','toolbar');
   const search = el('input','search'); search.type='search'; search.placeholder='Search name, handle, email, city'; search.value = S.cliQ;
   const add = el('div','addbar'); add.append(button('New client','btn small', () => clientForm(), 'plus'));
@@ -1465,7 +1810,7 @@ function viewClientList(m){
     if(q) list = list.filter(c => [c.name, c.instagram, c.facebook, c.email, c.city, c.phone, c.notes].join(' ').toLowerCase().includes(q));
     list.sort((a,b) => (b._spent - a._spent) || ((b._lastD||0) - (a._lastD||0)));
     box.replaceChildren();
-    const pill = c => { const p = pillOf(c.status || 'Client', c.status==='Established' ? 'ok' : ''); return p; };
+    const pill = c => c._owed ? owedPill(c) : pillOf(c.status || 'Client', c.status==='Established' ? 'ok' : '');
     const cols = [
       {k:'name', label:'Client', val:c => c.name || '(no name)'},
       {k:'status', label:'Status', val:c => c.status, cell:pill},
@@ -1473,6 +1818,7 @@ function viewClientList(m){
       {k:'handle', label:'Handle / email', val:c => c.instagram ? '@' + igHandle(c.instagram) : c.email || c.facebook || c.phone || ''},
       {k:'orders', label:'Orders', val:c => c._done, num:true},
       {k:'spent', label:'Spent', val:c => c._spent, num:true, fmt:c => c._spent ? fmt$(c._spent) : ''},
+      {k:'owed', label:'Owes', val:c => c._owed, num:true, fmt:c => c._owed ? fmt$(c._owed) : ''},
       {k:'last', label:'Last order', val:c => c._lastD, sort:c => c._lastD ? +c._lastD : 0, fmt:c => c._lastD ? fmtD(c._lastD) : ''},
       {k:'city', label:'City', val:c => [c.city, c.state].filter(Boolean).join(', ')},
     ];
@@ -1487,6 +1833,7 @@ function viewClientList(m){
 function clientSheet(c){
   const s = sheet(c.name || 'Client', [c.status, c._done ? plural(c._done, 'completed order') + ' · ' + fmt$(c._spent) : '', c.preferred ? 'prefers ' + c.preferred : ''].filter(Boolean).join(' · '));
   s.body.append(contactLinks(c));
+  if(c._owed) s.body.append(el('p','note', `${c._hold ? 'On hold: ' : ''}${fmt$(c._owed)} still owed on ${plural(c._orders.filter(o => o._due > 0 && !['Inquiry','Cancelled'].includes(o.status)).length, 'order')}.`));
   const addr = [c.shipName || c.name, c.addr1, c.addr2, [c.city, c.state, c.zip].filter(Boolean).join(' ')].filter(Boolean).join('\n');
   s.body.append(kv([['Pays with', c.payment], ['Ships to', c.addr1 ? addr : ''], ['First contact', c.first], ['Notes', c.notes]]));
   const act = el('div','actions');
@@ -1517,7 +1864,7 @@ function clientSheet(c){
   const logBox = el('div'); s.body.append(logBox);
   const log = c._log.slice().sort((a,b)=>(b._d||0)-(a._d||0));
   if(log.length){ log.forEach(l => { const b = el('div','msg' + (l.dir === 'Out' ? ' mine' : '')); b.append(el('span','who', [l.channel, l.dir === 'Out' ? 'You' : l.dir === 'In' ? 'Them' : 'Note', l._d ? fmtD(l._d) : ''].filter(Boolean).join(' · ')), document.createTextNode(l.text)); logBox.append(b); }); }
-  else if(!c.email) logBox.append(el('p','note','Messenger and Instagram can’t be read by the app yet. Paste the important bits with “Log conversation” so the history stays here.'));
+  else if(!c.email) logBox.append(infoNote('Messenger & Instagram', 'Messenger and Instagram can’t be read by the app yet. Paste the important bits with “Log conversation” so the history stays here.'));
   s.close = s.open();
 }
 function clientForm(c){
@@ -1525,20 +1872,20 @@ function clientForm(c){
   form(c ? 'Edit ' + (c.name || 'client') : 'New client', [
     ['name','Name','text',{required:true, wide:true}],
     ['preferred','Preferred contact','select',{choices:[''].concat(o.channels.filter(x => x !== 'Catalog'))}],
-    ['payment','Pays with','list',{choices:o.payment}],
+    ['payment','Pays with','list',{more:true, choices:o.payment}],
     ['instagram','Instagram','text',{placeholder:'@handle'}],
     ['facebook','Facebook / Messenger','text',{placeholder:'Name or profile link'}],
-    ['email','Email','text'],
-    ['phone','Phone','text'],
-    ['other','Other contact','text'],
-    ['shipName','Ship to name','text',{placeholder:'If different from their name'}],
-    ['addr1','Address','text',{wide:true}],
-    ['addr2','Apt / suite','text',{wide:true}],
-    ['city','City','text'],
-    ['state','State','text',{placeholder:'NC'}],
-    ['zip','ZIP','text'],
-    ['notes','Notes','area'],
-  ], c || {}, v => api('saveClient', Object.assign({}, v, c ? {id:c.id} : {first: iso(today())})), {done: () => 'Client saved'});
+    ['email','Email','text',{more:true}],
+    ['phone','Phone','text',{more:true}],
+    ['other','Other contact','text',{more:true}],
+    ['shipName','Ship to name','text',{more:true, placeholder:'If different from their name'}],
+    ['addr1','Address','text',{more:true, wide:true}],
+    ['addr2','Apt / suite','text',{more:true, wide:true}],
+    ['city','City','text',{more:true}],
+    ['state','State','text',{more:true, placeholder:'NC'}],
+    ['zip','ZIP','text',{more:true}],
+    ['notes','Notes','area',{more:true}],
+  ], c || {}, v => api('saveClient', Object.assign({}, v, c ? {id:c.id} : {first: iso(today())})), {editing: !!c, moreLabel:'Contact & address', done: () => 'Client saved'});
 }
 function logForm(c){
   form('Log conversation', [
@@ -1597,12 +1944,13 @@ function waitForm(w, client){
     ['cultivar','Cultivar','list',{choices:o.cultivars, required:true}],
     ['var','Var-type','list',{choices:o.vars}],
     ['stage','Stage','list',{choices:o.stageList, placeholder:'Any'}],
-    ['maxPrice','Max price','money'],
-    ['contact','Contact (if not a client yet)','text',{wide:true}],
-    ['notes','Notes','area'],
+    ['maxPrice','Max price','money',{more:true}],
+    ['contact','Contact (if not a client yet)','text',{more:true, wide:true}],
+    ['notes','Notes','area',{more:true}],
   ], init, v => { const c = d.clients.find(x => low(x.name) === low(v.client)); const rec = {clientId: c ? c.id : '', name: c ? c.name : v.client, cultivar:v.cultivar, var:v.var, stage:v.stage, maxPrice:v.maxPrice, contact:v.contact, notes:v.notes};
     if(!w) rec.added = iso(today()); return api('saveRecord','waitlist', Object.assign(rec, w ? {id:w.id} : {})); }, {done: () => 'Saved'});
 }
+/* JsCharts.html: panels, tables, charts, search, Today, sales/expense performance. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ===================== ERP building blocks ===================== */
 const DESK = window.matchMedia('(min-width: 760px)');
 try{ DESK.addEventListener('change', () => { if(S.data) render(); }); }catch(e){}
@@ -1701,7 +2049,7 @@ function timeChart(points, kind, fmtV, title){
   const box = el('div','viz'); if(title) box.append(el('p','vtitle', title));
   const narrow = !DESK.matches, W = narrow ? 360 : 600, H = narrow ? 190 : 200, L = 46, R = 10, T = 10, B = 24;
   const sv = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label': (title || '') + ': ' + points.map(p => p.label + ' ' + fmtV(p.value)).join(', ')});
-  const {step, top} = yScale(Math.max(0, ...points.map(p => p.value)));
+  const {step, top} = yScale(Math.max(0, ...points.map(p => Math.max(p.value, p.value2 || 0))));
   const n = Math.max(points.length, 1), slot = (W - L - R) / n;
   const y = v => T + (1 - v / top) * (H - T - B), xc = i => L + slot * i + slot / 2;
   for(let v = 0; v <= top + 1e-9; v += step){ sv.append(svgEl('line', {x1:L, x2:W - R, y1:y(v), y2:y(v), class: v ? 'gl' : 'ax'})); sv.append(svgEl('text', {x:L - 6, y:y(v) + 3, 'text-anchor':'end'}, fmtV(v))); }
@@ -1721,6 +2069,7 @@ function timeChart(points, kind, fmtV, title){
   } else {
     const d = points.map((p, i) => `${i ? 'L' : 'M'}${xc(i)},${y(p.value)}`).join(' ');
     sv.append(svgEl('path', {class:'ar', d: d + ` L${xc(n - 1)},${y(0)} L${xc(0)},${y(0)} Z`}));
+    if(points.some(p => p.value2 > p.value)) sv.append(svgEl('path', {class:'ln2', d: points.map((p, i) => `${i ? 'L' : 'M'}${xc(i)},${y(p.value2 || p.value)}`).join(' ')}));
     sv.append(svgEl('path', {class:'ln', d}));
     const dot = svgEl('circle', {class:'dot', r:5, cx:0, cy:0, visibility:'hidden'}); sv.append(dot);
     points.forEach((p, i) => {
@@ -1804,61 +2153,58 @@ S.inv2 = Object.assign({q:'', kind:'all', status:'active', stage:'all', chart:fa
 try{ const v = JSON.parse(localStorage.getItem('pm.dash') || '{}'); Object.assign(S.dash, v.dash || {}); Object.assign(S.inv2, v.inv2 || {}, {q:''}); }catch(e){}
 const saveDash = () => { try{ localStorage.setItem('pm.dash', JSON.stringify({dash:S.dash, inv2:S.inv2, per:S.per})); }catch(e){} };
 
-function viewDashboard(m){
+/* ---------- Today: one list of what needs you, most urgent first; money one tap away ---------- */
+function viewToday(m){
   const d = S.data, t = today(), y = t.getFullYear(), mo = t.getMonth();
-  const paid = d.sales.filter(s => s._rev > 0 && s._revD);
-  const month = paid.filter(s => s._revD.getFullYear()===y && s._revD.getMonth()===mo).reduce((a,s)=>a+s._rev,0);
+  const month = d.sales.filter(s => s._rev > 0 && s._revD && s._revD.getFullYear()===y && s._revD.getMonth()===mo).reduce((a,s)=>a+s._rev,0);
   const toShip = d.orders.filter(o => o._toShip), late = toShip.filter(o => o._late);
-  const unpaid = d.orders.filter(o => o.status === 'Awaiting payment' || o._onHold);
+  const owed = d.orders.filter(o => o.status === 'Awaiting payment' || o._onHold);
   const inq = d.inquiries.filter(q => q._open);
-  const incoming = d.expenses.filter(e => e._open && !/cancel/i.test(e.status));
-  const spend = d.expenses.filter(e => e._d && e._d.getFullYear()===y && e._d.getMonth()===mo && !/cancel/i.test(e.status)).reduce((a,e)=>a+e._a,0);
   const matches = d.waitlist.filter(w => w._matches.length);
   const careDue = d.care.filter(c => c._overdue);
-  const dash = el('div','dash'); m.append(dash);
-
-  // KPI strip
-  const k = el('div','kpis c12');
-  const kpi = (label, val, sub, cls, fn) => { const b = el(fn ? 'button' : 'div','kpi' + (cls ? ' ' + cls : '')); if(fn){ b.type = 'button'; b.onclick = fn; } b.append(el('span', null, label), el('b', null, val)); if(sub) b.append(el('small', null, sub)); k.append(b); };
-  kpi('To ship', String(toShip.length), late.length ? late.length + ' late' : 'on time', late.length ? 'bad' : toShip.length ? 'alert' : 'ok', () => go('orders', {ordTab:'ship'}));
-  kpi('Awaiting pay', String(unpaid.length), fmt$(unpaid.reduce((a,o)=>a+o._due,0)) + ' due', unpaid.length ? 'warn' : '', () => go('orders', {ordTab: unpaid.every(o => o._onHold) ? 'hold' : 'unpaid'}));
-  kpi('Inquiries', String(inq.length), 'new', inq.length ? 'alert' : '', () => go('clients', {cli:'inquiries', inqTab:'open'}));
-  kpi('Sales · month', fmt$(month), t.toLocaleDateString(undefined, {month:'long'}), 'ok', () => go('sales', {sal:'sales', saleTab:'all'}));
-  kpi('Waitlist', String(matches.length), 'matches now', matches.length ? 'alert' : '', () => go('clients', {cli:'waitlist', waitTab:'match'}));
-  kpi('Care due', String(careDue.length + d.repotDue.length), 'tasks + repots', careDue.length ? 'warn' : '', () => go('inventory', {inv:'care'}));
-  kpi('Incoming', String(incoming.length), 'orders to you', '', () => go('money', {mon:'expenses', expTab:'open'}));
-  kpi('Spent · month', fmt$(spend), 'expenses', '', () => go('money', {mon:'expenses', expTab:'all'}));
-  dash.append(k);
-
-  // Work queue + quick actions
+  const incoming = d.expenses.filter(e => /^shipped$/i.test(e.status));
+  // three numbers, each opens where the detail lives
+  const k = el('div','kpis three');
+  const kpi = (label, val, sub, cls, fn) => { const b = el('button','kpi' + (cls ? ' ' + cls : '')); b.type = 'button'; b.onclick = fn; b.append(el('span', null, label), el('b', null, val)); if(sub) b.append(el('small', null, sub)); k.append(b); };
+  kpi('Unfulfilled', String(toShip.length), late.length ? late.length + ' late' : 'on time', late.length ? 'bad' : toShip.length ? 'alert' : 'ok', () => go('orders', {ordTab:'ship'}));
+  kpi('Owed to you', fmt$(Math.round(owed.reduce((a,o)=>a+o._due,0))), plural(owed.length, 'order'), owed.length ? 'warn' : '', () => go('orders', {ordTab: owed.length && owed.every(o => o._onHold) ? 'hold' : 'unpaid'}));
+  kpi('Received', fmt$(Math.round(month)), t.toLocaleDateString(undefined, {month:'long'}), 'ok', () => go('sales', {sal:'sales'}));
+  m.append(k);
+  // the one list: [urgency 0 = most urgent, icon, tone, text, detail, open]
   const todo = [];
-  late.forEach(o => todo.push(['truck','bad', `Ship ${o._name}'s order`, `Was due ${fmtD(o._shipBy)} · ${o.id}`, () => orderSheet(o)]));
-  toShip.filter(o => o._hold || o._heat).forEach(o => todo.push(['sun','warn', `Weather: ${o._name}`, o.weather, () => orderSheet(o)]));
-  toShip.filter(o => !o._late).slice(0, 6).forEach(o => todo.push(['truck','alert', `Ship ${o._name}'s order`, o._shipBy ? 'Ship by ' + fmtD(o._shipBy) : o.status, () => orderSheet(o)]));
-  inq.slice(0, 5).forEach(q => todo.push(['chat','alert', `Reply to ${q.name || q.instagram || q.facebook || 'an inquiry'}`, (q.items || q.message || '').split('\n')[0], () => inquirySheet(q)]));
-  unpaid.slice(0, 5).forEach(o => todo.push(['wallet','warn', o._onHold ? `Collect the ${fmt$(o._due)} balance from ${o._name}` : `Collect ${fmt$(o._total)} from ${o._name}`, o._onHold ? `On hold · ${fmt$(o._deposit)} deposit in` : 'Since ' + fmtD(o._d), () => orderSheet(o)]));
-  matches.slice(0, 5).forEach(w => todo.push(['star','alert', `${w.name || 'Someone'} wants ${[w.cultivar, w.var].filter(Boolean).join(' ')}`, plural(w._matches.length, 'match') + ' available', () => waitSheet(w)]));
-  careDue.slice(0, 5).forEach(c => todo.push(['pot','warn', c.task, (c.sku ? c.sku + ' · ' : '') + 'due ' + fmtD(c._due), () => careSheet(c)]));
-  const tp = panel('Work queue', todo.length ? `${todo.length} item${todo.length === 1 ? '' : 's'} need you` : 'All caught up'); tp.classList.add('c8');
-  if(!todo.length) tp.body.append(el('div','empty','Nothing waiting on you.'));
-  else { const l = el('div','todo'); const cap = S.todoAll ? todo.length : 6; todo.slice(0, cap).forEach(([ic, cls, tx, sub, fn]) => { const b = el('button','row'); b.type='button'; const i = el('span','ic ' + cls); i.append(icon(ic)); const mid = el('div'); mid.append(el('div','t', tx), el('div','m', sub || '')); b.append(i, mid, el('span')); b.onclick = fn; l.append(b); }); tp.body.append(l);
-    if(todo.length > 6){ const mb = el('button','more', S.todoAll ? 'Show less' : `Show all ${todo.length}`); mb.type = 'button'; mb.onclick = () => { S.todoAll = !S.todoAll; render(); }; tp.body.append(mb); } }
-  const qp = panel('Quick actions'); qp.classList.add('c4');
+  late.forEach(o => todo.push([0,'truck','bad', `Ship ${o._name}'s order`, `Late · was due ${fmtD(o._shipBy)}`, () => orderSheet(o)]));
+  toShip.filter(o => o._hold || o._heat).forEach(o => todo.push([1,'sun','warn', `Check the weather for ${o._name}`, o.weather, () => orderSheet(o)]));
+  toShip.filter(o => !o._late).forEach(o => todo.push([2,'truck','alert', `Ship ${o._name}'s order`, o._shipBy ? 'By ' + fmtD(o._shipBy) : sayOrder(o.status), () => orderSheet(o)]));
+  inq.forEach(q => todo.push([3,'chat','alert', `Reply to ${q.name || q.instagram || q.facebook || 'an inquiry'}`, (q.items || q.message || '').split('\n')[0], () => inquirySheet(q)]));
+  matches.forEach(w => todo.push([4,'star','alert', `${w.name || 'Someone'} wants ${[w.cultivar, w.var].filter(Boolean).join(' ')}`, plural(w._matches.length, 'match') + ' in stock', () => waitSheet(w)]));
+  owed.forEach(o => todo.push([5,'wallet','warn', `Collect ${fmt$(o._due)} from ${o._name}`, o._onHold ? 'On hold · ' + fmt$(o._deposit) + ' paid' : 'Owed since ' + fmtD(o._d), () => orderSheet(o)]));
+  careDue.forEach(c => todo.push([6,'pot','warn', c.task, (c.sku ? c.sku + ' · ' : '') + 'due ' + fmtD(c._due), () => careSheet(c)]));
+  if(d.repotDue.length) todo.push([7,'pot','', `${plural(d.repotDue.length, 'plant')} due a repot check`, 'Oldest ' + fmtD(d.repotDue[0]._repot), () => go('inventory', {inv:'care'})]);
+  if(incoming.length) todo.push([8,'box','', `${plural(incoming.length, 'package')} on the way to you`, incoming.slice(0, 2).map(e => e.vendor || e.desc).join(', '), () => go('sales', {sal:'expenses', expTab:'open'})]);
+  todo.sort((a, b) => a[0] - b[0]);
+  const box = el('section','today');
+  const h = el('h2','sec', todo.length ? 'Needs you' : 'All caught up'); box.append(h);
+  if(!todo.length) box.append(el('div','empty','Nothing waiting on you.'));
+  else {
+    const l = el('div','todo'); const cap = S.todoAll ? todo.length : 8;
+    todo.slice(0, cap).forEach(([, ic, cls, tx, sub, fn]) => { const b = el('button','row'); b.type='button'; const i = el('span','ic ' + cls); i.append(icon(ic)); const mid = el('div'); mid.append(el('div','t', tx), el('div','m', sub || '')); b.append(i, mid, el('span')); b.onclick = fn; l.append(b); });
+    box.append(l);
+    if(todo.length > 8){ const mb = el('button','more', S.todoAll ? 'Show less' : `Show all ${todo.length}`); mb.type = 'button'; mb.onclick = () => { S.todoAll = !S.todoAll; render(); }; box.append(mb); }
+  }
+  m.append(box);
+  // quick actions: the three you use most, the rest one tap away
   const qa = el('div','qa');
-  [['box','New order',() => orderForm()], ['chat','Log inquiry',() => inquiryForm()], ['camera','Photos',() => openUpload()],
-   ['pot','Log repot',() => repotForm()], ['wallet','Expense',() => expenseForm()], ['leaf','New plant',() => plantForm()]].forEach(([ic, label, fn]) => { const b = el('button'); b.type='button'; b.append(icon(ic), el('span', null, label)); b.onclick = fn; qa.append(b); });
-  qp.body.append(qa);
-  dash.append(tp, qp);
-
-  dash.append(inventoryTracker());
-  dash.append(salesPerformance());
+  const more = () => { const sh = sheet('Add'); const g = el('div','qa'); [['chat','Log inquiry',() => inquiryForm()], ['wallet','Expense',() => expenseForm()], ['leaf','New plant',() => plantForm()], ['leaf','New corm lot',() => cormForm()], ['pot','Log repot',() => repotForm()], ['users','New client',() => clientForm()]]
+    .forEach(([ic, label, fn]) => { const b = el('button'); b.type='button'; b.append(icon(ic), el('span', null, label)); b.onclick = () => { sh.close(); fn(); }; g.append(b); }); sh.body.append(g); sh.close = sh.open(); };
+  [['box','New order',() => orderForm()], ['tag','Record sale',() => saleForm()], ['camera','Photos',() => openUpload()], ['plus','More',more]].forEach(([ic, label, fn]) => { const b = el('button'); b.type='button'; b.append(icon(ic), el('span', null, label)); b.onclick = fn; qa.append(b); });
+  m.append(qa);
 }
 
 /* ---------- Inventory tracker ---------- */
 function invItems(){
   const d = S.data;
   return d.plants.map(p => ({kind:'Plant', id:p.sku, cultivar:p.cultivar, var:p.var || '', stage:p.stage || '', status:p.status || '', qty:1, photos:p._media ? p._media.n : 0, sub:p.sub || '', species:p.species || '', ref:p}))
-    .concat(d.corms.map(c => ({kind:'Corm', id:c.lot, cultivar:c.common || c.item, var:c.var || '', stage:'Corm', status:c.status || '', qty:parseInt(c.qty, 10) || 0, photos:0, sub:c.sub || '', species:c.cultivar || '', item:c.item, ref:c})));
+    .concat(d.corms.map(c => ({kind:'Corm', id:c.lot, cultivar:c.common || c.item, var:c.var || '', stage:'Corm', status:c.status || '', qty:parseInt(c.qty, 10) || 0, photos:c._media ? c._media.n : 0, sub:c.sub || '', species:c.cultivar || '', item:c.item, ref:c})));
 }
 const INV_COLS = [
   {k:'id', label:'SKU / Lot', val:x => x.id, cls:'mono', cell:x => document.createTextNode((x.kind === 'Corm' ? 'Lot ' : '') + x.id)},
@@ -1867,91 +2213,18 @@ const INV_COLS = [
   {k:'var', label:'Var-type', val:x => x.var},
   {k:'stage', label:'Stage', val:x => x.stage},
   {k:'sub', label:'Code', val:x => x.sub, cls:'mono'},
-  {k:'status', label:'Status', val:x => x.status, cell:x => pillOf(x.status || '—', statusCls(x.status))},
+  {k:'status', label:'Status', val:x => x.status, cell:x => pillOf(say(x.status) || '—', statusCls(x.status))},
   {k:'qty', label:'Qty', val:x => x.qty, num:true},
   {k:'photos', label:'Photos', val:x => x.photos, num:true},
 ];
-const INV_CARD = {title:x => `${x.cultivar}${x.var ? ' ' + x.var : ''}`, sub:x => [(x.kind === 'Corm' ? 'Lot ' : 'SKU ') + x.id, x.stage, x.sub].filter(Boolean).join(' · '), right:x => x.kind === 'Corm' ? `${x.qty}` : '', pill:x => pillOf(x.status || '—', statusCls(x.status))};
+const INV_CARD = {title:x => `${x.cultivar}${x.var ? ' ' + x.var : ''}`, sub:x => [(x.kind === 'Corm' ? 'Lot ' : 'SKU ') + x.id, x.stage, x.sub].filter(Boolean).join(' · '), right:x => x.kind === 'Corm' ? `${x.qty}` : '', pill:x => pillOf(say(x.status) || '—', statusCls(x.status))};
 function invOpen(x){ if(x.kind === 'Corm') cormSheet(x.ref); else plantSheet(x.ref); }
-function invFilter(items, f){
-  const toks = low(f.q).split(/\s+/).filter(Boolean);
-  return items.filter(x => {
-    if(f.kind !== 'all' && low(x.kind) !== f.kind) return false;
-    const st = low(x.status);
-    if(f.status === 'active' && st === 'sold') return false;
-    if(f.status !== 'active' && f.status !== 'all' && st !== f.status) return false;
-    if(f.stage !== 'all' && (f.stage === 'other' ? S.data.options.stageList.some(s => low(s) === low(x.stage)) : low(x.stage) !== f.stage)) return false;
-    if(toks.length){ const hay = low([x.id, x.kind === 'Corm' ? 'lot corm' : 'sku', x.cultivar, x.var, x.stage, x.status, x.sub, x.species, x.item].join(' ')); if(!toks.every(t => hay.includes(t))) return false; }
-    return true;
-  });
-}
-function inventoryTracker(){
-  const f = S.inv2, all = invItems();
-  const p = panel('Inventory tracker', 'Search by SKU, cultivar, var-type or stage');
-  p.classList.add('c12');
-  const add = button('New plant','btn small ghost', () => plantForm(), 'plus'); p.head.append(add);
-  p.body.remove();
-  const fl = el('div','filters');
-  const search = el('input','search'); search.type = 'search'; search.placeholder = 'e.g. 0178, Metallic Blue, Albo pup, corm'; search.value = f.q; search.setAttribute('aria-label','Search inventory');
-  fl.append(search);
-  const redraw = () => { saveDash(); body.replaceChildren(...invBody(all, f)); };
-  const chipsRow = () => {
-    const rows = el('div'); rows.style.cssText = 'display:grid;gap:8px;grid-template-columns:minmax(0,1fr)';
-    const cnt = (pred) => all.filter(pred).length;
-    rows.append(frow('Type', chipGroup(f, 'kind', [['all','All'],['plant','Plants', cnt(x => x.kind === 'Plant')],['corm','Corm lots', cnt(x => x.kind === 'Corm')]], () => { rebuild(); })));
-    rows.append(frow('Status', chipGroup(f, 'status', [['active','In stock'],['available','Available'],['pending','Pending'],['hold','Hold'],['nfs','NFS'],['tbd','TBD'],['sold','Sold'],['all','All']], () => { rebuild(); })));
-    rows.append(frow('Stage', chipGroup(f, 'stage', [['all','All']].concat(S.data.options.stageList.map(s => [low(s), s])).concat([['other','Other']]), () => { rebuild(); })));
-    return rows;
-  };
-  let chipBox = chipsRow(); fl.append(chipBox);
-  const body = el('div');
-  const rebuild = () => { const nb = chipsRow(); chipBox.replaceWith(nb); chipBox = nb; redraw(); };
-  search.oninput = () => { f.q = search.value; redraw(); };
-  p.append(fl, body);
-  body.append(...invBody(all, f));
-  return p;
-}
-function invBody(all, f){
-  const items = invFilter(all, f);
-  const plants = items.filter(x => x.kind === 'Plant'), lots = items.filter(x => x.kind === 'Corm');
-  const units = plants.length + lots.reduce((a, x) => a + x.qty, 0);
-  const k = el('div','kpis in');
-  [[String(plants.length), 'Plants'], [`${lots.length} · ${lots.reduce((a, x) => a + x.qty, 0)}`, 'Corm lots · corms'], [String(items.filter(x => low(x.status) === 'available').length), 'Available'], [String(new Set(items.map(x => low(x.cultivar))).size), 'Cultivars']]
-    .forEach(([v, l]) => { const d = el('div','kpi'); d.append(el('span', null, l), el('b', null, v)); k.append(d); });
-  const out = [k];
-  // expandable chart
-  const ex = el('button','expander'); ex.type = 'button'; ex.setAttribute('aria-expanded', String(f.chart)); ex.append(icon('chev'), document.createTextNode(f.chart ? 'Hide chart' : 'Show chart'));
-  const chartBox = el('div'); chartBox.hidden = !f.chart;
-  ex.onclick = () => { f.chart = !f.chart; saveDash(); ex.setAttribute('aria-expanded', String(f.chart)); ex.lastChild.textContent = f.chart ? 'Hide chart' : 'Show chart'; chartBox.hidden = !f.chart; if(f.chart) drawChart(); };
-  const drawChart = () => {
-    chartBox.replaceChildren();
-    const inner = el('div','panel-b');
-    const dims = [['cv','Cultivar + Var-type'],['cultivar','Cultivar'],['var','Var-type'],['stage','Stage'],['status','Status']];
-    inner.append(frow('Group by', chipGroup(f, 'dim', dims, () => { saveDash(); drawChart(); })));
-    const keyOf = x => f.dim === 'cv' ? (x.var ? `${x.cultivar} (${x.var})` : x.cultivar) : f.dim === 'cultivar' ? x.cultivar : f.dim === 'var' ? (x.var || '(none)') : f.dim === 'stage' ? (x.stage || '(none)') : (x.status || '(none)');
-    const g = {}; items.forEach(x => { const kk = keyOf(x) || '(none)'; g[kk] = (g[kk] || 0) + (x.kind === 'Corm' ? x.qty : 1); });
-    const arr = Object.entries(g).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
-    const cap = f.all ? arr.length : 15;
-    inner.append(el('p','note', `${units} plants + corms in ${arr.length} group${arr.length === 1 ? '' : 's'} (corm lots count each corm). Tap a bar to filter the table.`));
-    const bars = hBars(arr, v => String(v), cap, it => { if(f.dim === 'stage'){ f.stage = low(it.label); } else { f.q = f.dim === 'status' ? '' : it.label.replace(/[()]/g, ''); if(f.dim === 'status') f.status = low(it.label); } saveDash(); render(); });
-    bars.style.marginTop = '8px'; inner.append(bars);
-    if(arr.length > 15){ const mb = el('button','more', f.all ? 'Show top 15' : `Show all ${arr.length}`); mb.type = 'button'; mb.onclick = () => { f.all = !f.all; saveDash(); drawChart(); }; inner.append(mb); }
-    chartBox.append(inner);
-  };
-  if(f.chart) drawChart();
-  out.push(ex, chartBox);
-  const tbl = dataTable({id:'dash-inv', cols:INV_COLS, rows:items, onOpen:invOpen, card:INV_CARD, sort:{k:'cultivar', dir:1}, limit:50, inPanel:true, empty:'Nothing matches. Try fewer words or another filter.'});
-  tbl.style.borderTop = '1px solid var(--line)';
-  out.push(tbl);
-  return out;
-}
-
 /* ---------- Period performance (the sheet's Sales Dashboard, reusable for sales and expenses) ---------- */
 S.per = S.per || {};
 try{ const v = JSON.parse(localStorage.getItem('pm.dash') || '{}'); Object.assign(S.per, v.per || {}); }catch(e){}
 function perState(id, by){
   if(id === 'dash') return S.dash;
-  return S.per[id] || (S.per[id] = {horizon:'30', group:'week', by, measure:'sales', from:'', to:'', f:{}, open:true});
+  return S.per[id] || (S.per[id] = {horizon:'30', group:'week', by, measure:'sales', from:'', to:'', f:{}, open:false});
 }
 function periodRange(D, dates){
   const t = today();
@@ -1981,14 +2254,18 @@ function periodPanel(cfg){
   if(!cfg.measures.some(x => x[0] === D.measure)) D.measure = cfg.measures[0][0];
   const p = panel(cfg.title, cfg.sub); p.classList.add('c12');
   const redraw = () => { saveDash(); const n = periodPanel(cfg); p.replaceWith(n); };
+  // Collapsible panels start with just their three numbers; the charts open on request.
+  const chartsOff = cfg.collapsible && D.open !== true;
   if(cfg.collapsible){
-    const t = el('button','btn small ghost', D.open === false ? 'Show chart' : 'Hide chart'); t.type = 'button';
-    t.setAttribute('aria-expanded', String(D.open !== false)); t.onclick = () => { D.open = D.open === false; redraw(); };
+    const t = el('button','btn small ghost', chartsOff ? 'Show chart' : 'Hide chart'); t.type = 'button';
+    t.setAttribute('aria-expanded', String(!chartsOff)); t.onclick = () => { D.open = chartsOff; redraw(); };
     p.head.append(t);
-    if(D.open === false){ p.body.remove(); return p; }
   }
   p.body.remove();
-  const fl = el('div','filters');
+  const HZ = {'7':'Last 7 days','30':'Last 30 days','90':'Last 90 days','ytd':'Year to date','12m':'Last 12 months','all':'All time','custom':'Custom dates'};
+  const fl = el('details','filters fold'); fl.open = !!D.fopen; fl.ontoggle = () => { D.fopen = fl.open; saveDash(); };
+  const nOn = (cfg.filters || []).filter(fd => D.f[fd.k] && D.f[fd.k] !== 'all').length;
+  const sm = el('summary'); sm.append(el('span', null, `${HZ[D.horizon] || 'Period'} · by ${D.group}${nOn ? ` · ${nOn} filter${nOn === 1 ? '' : 's'}` : ''}`), el('span','edit', 'Change')); fl.append(sm);
   fl.append(frow('Period', chipGroup(D, 'horizon', [['7','7 days'],['30','30 days'],['90','90 days'],['ytd','Year to date'],['12m','12 months'],['all','All time'],['custom','Custom']], redraw)));
   if(D.horizon === 'custom'){
     const r = el('div','frow'); r.append(el('span','lbl','From'));
@@ -2015,23 +2292,30 @@ function periodPanel(cfg){
   const inP = rows.filter(r => { const d = cfg.dateOf(r); return d && d >= start && d <= end; });
   const total = inP.reduce((a, r) => a + cfg.valueOf(r), 0), units = inP.reduce((a, r) => a + (cfg.unitsOf ? cfg.unitsOf(r) : 1), 0);
   const k = el('div','kpis in');
-  cfg.kpis(inP, total, units).forEach(([v, l]) => { const x = el('div','kpi'); x.append(el('span', null, l), el('b', null, v)); k.append(x); });
+  const kp = cfg.kpis(inP, total, units);
+  if(cfg.owedRows){ const ow = cfg.owedRows.reduce((a, r) => a + cfg.owedOf(r), 0); if(ow) kp.splice(1, 0, [fmt$(Math.round(ow)), 'Owed']); }
+  kp.forEach(([v, l]) => { const x = el('div','kpi'); x.append(el('span', null, l), el('b', null, v)); k.append(x); });
   p.append(k);
   const filt = (cfg.filters || []).filter(fd => D.f[fd.k] !== 'all').map(fd => D.f[fd.k]);
-  const sub = el('p','note', `${fmtDY(start)} – ${fmtDY(end)}${filt.length ? ' · ' + filt.join(' · ') : ''}`); sub.style.margin = '8px 14px 0'; p.append(sub);
+  const sub = el('p','note', `${fmtDY(start)} – ${fmtDY(end)}${filt.length ? ' · ' + filt.join(' · ') : ''}`); sub.style.margin = '8px 14px ' + (chartsOff ? '12px' : '0'); p.append(sub);
+  if(chartsOff) return p;
 
   // periods, including empty ones so gaps show
   const map = new Map();
   for(let x = bucketOf(start, D.group); x <= end; ){ map.set(+x, 0); if(D.group === 'day') x = new Date(x.getFullYear(), x.getMonth(), x.getDate() + 1); else if(D.group === 'week') x = new Date(x.getFullYear(), x.getMonth(), x.getDate() + 7); else x = new Date(x.getFullYear(), x.getMonth() + 1, 1); if(map.size > 800) break; }
   inP.forEach(r => { const b = +bucketOf(cfg.dateOf(r), D.group); map.set(b, (map.get(b) || 0) + cfg.valueOf(r)); });
   const lab = (dt, short) => D.group === 'month' ? dt.toLocaleDateString(undefined, {month:'short', year: short ? '2-digit' : 'numeric'}) : (D.group === 'week' ? (short ? '' : 'Wk of ') : '') + dt.toLocaleDateString(undefined, {month:'short', day:'numeric'});
-  let run = 0;
-  const pts = [...map.entries()].sort((a, b) => a[0] - b[0]).map(([ts, v]) => { const dt = new Date(ts); run += v; return {label: lab(dt), short: lab(dt, true), value: v, run}; });
+  // Unrealized (still owed on open orders), dated by the sale: drawn as a dashed line on top of the running total
+  const owedMap = new Map(); let owedTotal = 0;
+  if(cfg.owedRows) cfg.owedRows.forEach(r => { const d0 = cfg.owedDateOf(r); if(!d0 || d0 > end) return; const b = Math.max(+bucketOf(d0, D.group), +bucketOf(start, D.group)); owedMap.set(b, (owedMap.get(b) || 0) + cfg.owedOf(r)); owedTotal += cfg.owedOf(r); });
+  let run = 0, owedRun = 0;
+  const pts = [...map.entries()].sort((a, b) => a[0] - b[0]).map(([ts, v]) => { const dt = new Date(ts); run += v; owedRun += owedMap.get(ts) || 0; return {label: lab(dt), short: lab(dt, true), value: v, run, owed: owedRun}; });
   const money0 = v => '$' + Math.round(v).toLocaleString();
   const grid = el('div','dash'); grid.style.padding = '12px 14px 14px';
   const left = el('div','c7'); const right = el('div','c5');
   left.append(timeChart(pts, 'col', money0, `${cfg.verb} per ${D.group}`));
-  const rt = timeChart(pts.map(q => ({label:q.label, short:q.short, value:q.run, tip:`${q.label}: ${money0(q.run)} so far`})), 'line', money0, 'Running total');
+  const rt = timeChart(pts.map(q => ({label:q.label, short:q.short, value:q.run, value2: q.run + q.owed, tip:`${q.label}: ${money0(q.run)} so far` + (q.owed ? ` · ${money0(q.run + q.owed)} if everything owed is paid` : '')})), 'line', money0, 'Running total');
+  if(owedTotal){ const key = el('div','key'); const a = el('span'); a.append(el('i'), document.createTextNode('Received')); const b = el('span'); b.append(el('i','dash'), document.createTextNode(`+ ${money0(owedTotal)} owed (unrealized)`)); key.append(a, b); rt.append(key); }
   rt.style.marginTop = '14px'; left.append(rt);
   // breakdown
   const keyOf = cfg.breakdowns.find(b => b[0] === D.by)[2];
@@ -2058,49 +2342,62 @@ function periodPanel(cfg){
 function salesPerfCfg(id, collapsible){
   const d = S.data;
   const speciesOf = c => { const p = d.plants.find(x => low(x.cultivar) === low(c) && x.species); return p ? p.species : '(No species)'; };
-  return {id, collapsible, title:'Sales performance', sub:'Money received only: paid sales, plus deposits on held orders. Unpaid sales aren’t counted.', verb:'Sales', empty:'No money received in this period.',
+  return {id, collapsible, title:'Sales performance', sub:'Money in hand; owed is shown apart', verb:'Sales', empty:'No money received in this period.',
     rows: d.sales.filter(s => s._rev > 0 && s._revD), dateOf: s => s._revD, valueOf: s => s._rev, unitsOf: s => s._paid ? (s._u || 0) : 0,
+    owedRows: d.sales.filter(s => s._owed > 0), owedDateOf: s => s._d, owedOf: s => s._owed,
     filters:[{k:'genus', label:'Genus', keyOf:s => s._genus}, {k:'product', label:'Product', keyOf:s => s._product}],
     breakdowns:[['cultivar','Cultivar', s => s.cultivar], ['var','Var-type', s => s.var], ['cv','Cultivar + Var-type', s => s.var ? `${s.cultivar} (${s.var})` : s.cultivar],
       ['species','Species', s => s.cultivar ? speciesOf(s.cultivar) : ''], ['genus','Genus', s => s._genus], ['product','Product', s => s._product],
       ['type','Sale type', s => s.type], ['platform','Platform', s => s.platform]],
     measures:[['sales','Sales ($)'], ['units','Units sold']],
-    kpis:(rows, total, units) => { const full = rows.filter(s => s._paid), dep = rows.filter(s => s._deposit);
-      return [[fmt$(Math.round(total)), 'Received'], [String(units), 'Units sold'], [String(full.length) + (dep.length ? ` + ${dep.length} deposit${dep.length === 1 ? '' : 's'}` : ''), 'Paid sales'], [full.length ? fmt$(Math.round(full.reduce((a, s) => a + s._rev, 0) / full.length)) : '—', 'Average sale']]; }};
+    kpis:(rows, total, units) => [[fmt$(Math.round(total)), 'Received'], [String(units), 'Units sold']]};
 }
-function salesPerformance(){ return periodPanel(salesPerfCfg('dash')); }
 function expensePerfCfg(){
   const d = S.data;
-  return {id:'exp', collapsible:true, title:'Spending', sub:'Expenses by date, cancelled orders left out', verb:'Spent', empty:'No expenses in this period.',
+  return {id:'exp', collapsible:true, title:'Spending', sub:'Cancelled orders left out', verb:'Spent', empty:'No expenses in this period.',
     rows: d.expenses.filter(e => e._d && !/cancel/i.test(e.status)), dateOf: e => e._d, valueOf: e => e._a, unitsOf: () => 1,
     filters:[], breakdowns:[['category','Category', e => e.category], ['vendor','Vendor', e => e.vendor], ['platform','Where bought', e => e.platform], ['paidWith','Paid with', e => e.paidWith], ['tax','Tax line', e => e._tax]],
     measures:[['sales','Spent ($)'], ['units','Number of expenses']],
-    kpis:(rows, total) => [[fmt$(Math.round(total)), 'Spent'], [String(rows.length), 'Expenses'], [rows.length ? fmt$(Math.round(total / rows.length)) : '—', 'Average'], [fmt$(Math.round(rows.reduce((a, e) => a + money(e.shipping), 0))), 'Of that, shipping']]};
+    kpis:(rows, total) => [[fmt$(Math.round(total)), 'Spent'], [String(rows.length), 'Expenses'], [fmt$(Math.round(rows.reduce((a, e) => a + money(e.shipping), 0))), 'Shipping']]};
 }
 setupSearch();
+/* JsSales.html: sales, price charts, auctions, expenses, profit, taxes, settings, devices. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ---------- Sales & pricing ---------- */
+const SALES_PAGES = {sales:viewSaleList, expenses:viewExpenses, profit:viewProfit, more:viewMore, prices:viewPrices, watch:viewWatch, auctions:viewAuctions, reorder:viewReorder, taxes:viewTaxes, settings:viewSettings};
 function viewSales(m){
-  const tab = subtabs(m, 'sal', [['sales','Sales'],['prices','Price charts'],['watch','Price watch'],['auctions','Auctions', S.data.auctions.filter(a => /planned|listed/i.test(a.status)).length]]);
-  ({sales:viewSaleList, prices:viewPrices, watch:viewWatch, auctions:viewAuctions})[tab](m);
+  if(!SALES_PAGES[S.sal]) S.sal = 'sales';
+  const inMore = MORE_PAGES.some(p => p[0] === S.sal);
+  subtabs(m, 'sal', SUBS.sales[1], inMore ? 'more' : S.sal);
+  if(inMore){ const back = el('button','back', '‹ More'); back.type = 'button'; back.onclick = () => go('sales', {sal:'more'}); m.append(back); }
+  SALES_PAGES[S.sal](m);
+}
+/** Sales › More: the pages you need now and then. */
+function viewMore(m){
+  const live = S.data.auctions.filter(a => /planned|listed/i.test(a.status)).length;
+  const l = el('div','list');
+  MORE_PAGES.forEach(([id, label, ic]) => { const b = el('button','row'); b.type = 'button'; const i = el('span','ic'); i.append(icon(ic)); const mid = el('div'); mid.append(el('div','t', label));
+    if(id === 'auctions' && live) mid.append(el('div','m', plural(live, 'auction') + ' coming up'));
+    b.append(i, mid, el('span')); b.onclick = () => go('sales', {sal:id}); l.append(b); });
+  m.append(l);
 }
 function saleRow(x){
   const b = el('button','row noicon'); b.type='button';
   const mid = el('div'); mid.append(el('div','t', x.item || '(no item name)'), el('div','m', [x.customer, x._d ? fmtD(x._d) : x.date, x.platform || x.type, x.orderId].filter(Boolean).join(' · ')));
   const r = el('div','r'); r.append(el('span','amt', fmt$(x._p)));
-  const pill = x._ship ? el('span','pill alert','To ship') : x._transit ? el('span','pill info','In transit') : x._pending ? el('span','pill warn','Unpaid') : x._deposit ? el('span','pill warn','Deposit') : x._delivered ? el('span','pill ok','Delivered') : x._paid ? el('span','pill ok','Paid') : el('span','pill', x.paid || '—');
+  const pill = x._ship ? el('span','pill alert','Unfulfilled') : x._transit ? el('span','pill info','In transit') : x._pending ? el('span','pill warn','Owed') : x._deposit ? el('span','pill warn','On hold') : x._delivered ? el('span','pill ok','Delivered') : x._paid ? el('span','pill ok','Paid') : el('span','pill', x.paid || '—');
   r.append(pill); b.append(mid, r); b.onclick = () => saleForm(x);
   return b;
 }
 function viewSaleList(m){
   const d = S.data;
-  const tabs = {ship:['To ship', s => s._ship], transit:['In transit', s => s._transit], unpaid:['Unpaid', s => s._pending || s._deposit], all:['All', () => true]};
+  const tabs = {ship:['Unfulfilled', s => s._ship], transit:['In transit', s => s._transit], unpaid:['Owed', s => s._pending || s._deposit], all:['All', () => true]};
   const tb = el('div','toolbar');
   const search = el('input','search'); search.type='search'; search.placeholder='Search item, customer, SKU, tracking'; search.value = S.saleQ;
   const add = el('div','addbar'); add.append(button('Record sale','btn small', () => saleForm(), 'plus'), selectButton('sales'));
   const perf = periodPanel(salesPerfCfg('sales', true)); perf.style.marginBottom = '14px'; m.append(perf);
   tb.append(search, add, chipRow('saleTab', tabs, d.sales)); m.append(tb);
   const box = el('div'); m.append(box);
-  const pill = x => x._ship ? pillOf('To ship','alert') : x._transit ? pillOf('In transit','info') : x._pending ? pillOf('Unpaid','warn') : x._deposit ? pillOf('Deposit','warn') : x._delivered ? pillOf('Delivered','ok') : x._paid ? pillOf('Paid','ok') : pillOf(x.paid || '—');
+  const pill = x => x._ship ? pillOf('Unfulfilled','alert') : x._transit ? pillOf('In transit','info') : x._pending ? pillOf('Owed','warn') : x._deposit ? pillOf('On hold','warn') : x._delivered ? pillOf('Delivered','ok') : x._paid ? pillOf('Paid','ok') : pillOf(x.paid || '—');
   const cols = [
     {k:'id', label:'Sale', val:x => x.id, cls:'mono'},
     {k:'date', label:'Date', val:x => x._d, sort:x => x._d ? +x._d : 0, fmt:x => x._d ? fmtD(x._d) : x.date},
@@ -2145,12 +2442,15 @@ function viewPrices(m){
   const f2 = x => f1(x) && (!P.var || low(x.var || '(none)') === low(P.var));
   const stages = opts(pts.filter(f2), 'stage'); if(P.stage && !stages.some(v => low(v[0]) === low(P.stage))) P.stage = '';
   const f3 = x => f2(x) && (!P.stage || low(x.stage || '(none)') === low(P.stage));
-  const card = el('div','card pad'); const form = el('div','form');
+  const card = el('div','card pad'); let form = el('div','form');
   const pick = (label, list, key, anyLabel, anyValue) => { const w = el('label','f'); const s = el('select'); if(anyLabel){ const o = el('option', null, anyLabel); o.value = anyValue || ''; s.append(o); } list.forEach(([v, n]) => { const o = el('option', null, `${v} (${n})`); o.value = v; s.append(o); }); s.value = P[key]; s.onchange = () => { P[key] = s.value; if(key === 'genus' || key === 'product' || key === 'cultivar'){ P.var = ''; P.stage = ''; } if(key === 'var') P.stage = ''; render(); }; w.append(label, s); form.append(w); };
-  pick('Genus', genera, 'genus', 'All genera'); pick('Product', prods, 'product', 'All products');
-  pick('Cultivar', top, 'cultivar', 'All cultivars', '*'); pick('Var-type', vars, 'var', 'Any var-type'); pick('Stage', stages, 'stage', 'Any stage');
-  const cw = el('label','f check'); const cb = el('input'); cb.type = 'checkbox'; cb.checked = P.comps; cb.onchange = () => { P.comps = cb.checked; render(); }; cw.append(cb, el('span', null, 'Include price-watch comps')); form.append(cw);
-  card.append(form); m.append(card);
+  pick('Cultivar', top, 'cultivar', 'All cultivars', '*'); pick('Var-type', vars, 'var', 'Any var-type');
+  const main = form; const fold = el('details','fold'); fold.open = !!P.fopen; fold.ontoggle = () => { P.fopen = fold.open; };
+  const sm = el('summary'); sm.append(el('span', null, 'More filters' + ([P.genus, P.product, P.stage].filter(Boolean).length ? ' · ' + [P.genus, P.product, P.stage].filter(Boolean).join(' · ') : '')), el('span','edit','Change')); fold.append(sm);
+  const form2 = el('div','form'); fold.append(form2);
+  { const save = form; form = form2; pick('Genus', genera, 'genus', 'All genera'); pick('Product', prods, 'product', 'All products'); pick('Stage', stages, 'stage', 'Any stage');
+    const cw = el('label','f check'); const cb = el('input'); cb.type = 'checkbox'; cb.checked = P.comps; cb.onchange = () => { P.comps = cb.checked; render(); }; cw.append(cb, el('span', null, 'Include price-watch comps')); form2.append(cw); form = save; }
+  card.append(main, fold); m.append(card);
   const ranges = {d30:['30 days', 30], d90:['90 days', 90], y1:['1 year', 365], all:['All time', 0]};
   const chips = el('div','chips'); chips.style.margin = '10px 0';
   Object.entries(ranges).forEach(([k,[l]]) => { const b = el('button','chip', l); b.type='button'; b.setAttribute('aria-pressed', String(P.range===k)); b.onclick = () => { P.range = k; render(); }; chips.append(b); });
@@ -2164,7 +2464,7 @@ function viewPrices(m){
   const name = [P.genus, P.product ? P.product.toLowerCase() + 's' : '', P.cultivar === '*' ? 'all cultivars' : P.cultivar, P.var, P.stage].filter(Boolean).join(' · ');
   const trend = trendOf(list.filter(x => x.kind !== 'nobid'));
   const tiles = el('div','tiles');
-  [[String(sold.length), 'Times you sold it'], [prices.length ? fmt$(Math.round(avg)) : '—', 'Average price'], [prices.length ? fmt$(Math.round(med)) : '—', 'Median price'],
+  [[String(sold.length), 'Times you sold it'], [prices.length ? fmt$(Math.round(avg)) : '—', 'Average price'],
    [trend ? (trend.rate >= 0 ? '+' : '−') + fmt$(Math.abs(Math.round(trend.rate))) : '—', trend ? 'Trend per ' + trend.unit : 'Trend (needs 3+ prices over a week)']]
     .forEach(([n,l]) => { const x = el('div','tile'); x.append(el('b',null,n), el('span',null,l)); tiles.append(x); });
   m.append(tiles);
@@ -2172,7 +2472,7 @@ function viewPrices(m){
   m.append(priceChart(list, avg, name, trend));
   m.append(el('h2','sec','Data points'));
   listOf(m, list.slice().reverse(), x => { const r = el('div','row static noicon'); const mm = el('div'); mm.append(el('div','t', `${fmt$(Math.round(x.p*100)/100)} · ${fmtDY(x.d)}`), el('div','m', [x.kind === 'sale' ? 'Your sale' : x.kind === 'comp' ? 'Comp' : 'No bid', x.who, x.where, [P.cultivar === '*' ? x.cultivar : '', x.var, x.stage].filter(Boolean).join(' ')].filter(Boolean).join(' · '))); r.append(mm, el('span','pill ' + (x.kind==='sale' ? 'ok' : x.kind==='comp' ? 'info' : ''), x.kind === 'sale' ? 'Sold' : x.kind === 'comp' ? 'Comp' : 'No bid')); return r; }, 'No sales for this selection in this period.', false);
-  m.append(el('p','note','Prices are per unit (multi-unit sales are divided). The trendline is a straight-line fit through your sale prices (and comps, when included); no-bid starting prices are left out. Genus comes from a Genus column on the sale if you add one, otherwise from the plant in INVENTORY. Product is Corm for corm stages and Plant otherwise, until a Product column is added.'));
+  m.append(infoNote('How prices are counted', 'Prices are per unit (multi-unit sales are divided). The trendline is a straight-line fit through your sale prices (and comps, when included); no-bid starting prices are left out. Genus comes from a Genus column on the sale if you add one, otherwise from the plant in INVENTORY. Product is Corm for corm stages and Plant otherwise, until a Product column is added.'));
 }
 /** Least-squares line through {d, p}. Needs 3+ prices spread over at least a week; the rate is per week under 2 months of data, per month after. */
 function trendOf(list){
@@ -2219,7 +2519,7 @@ function niceStep(v){ const p = Math.pow(10, Math.floor(Math.log10(Math.max(v, 1
 function viewWatch(m){
   const d = S.data;
   const add = el('div','addbar'); add.append(button('Log a price','btn small', () => watchForm(), 'plus')); m.append(add);
-  m.append(el('p','note','Jot down prices you see on Palmstreet, Facebook groups or Instagram (sold or listed). They show next to your own sales on the price charts.'));
+  m.append(infoNote('What goes here', 'Jot down prices you see on Palmstreet, Facebook groups or Instagram (sold or listed). They show next to your own sales on the price charts.'));
   listOf(m, d.watch.slice().sort((a,b) => (parseD(b.date)||0) - (parseD(a.date)||0)), w => { const b = el('button','row noicon'); b.type='button'; const mm = el('div'); mm.append(el('div','t', [w.cultivar, w.var, w.stage].filter(Boolean).join(' ')), el('div','m', [w.date, w.source, w.notes].filter(Boolean).join(' · '))); const r = el('div','r'); r.append(el('span','amt', fmt$(money(w.price))), el('span','pill ' + (/sold/i.test(w.result) ? 'ok' : /no bid/i.test(w.result) ? '' : 'info'), w.result || 'Seen')); b.append(mm, r); b.onclick = () => watchForm(w); return b; }, 'No comps logged yet.');
 }
 function watchForm(w){
@@ -2250,7 +2550,7 @@ function viewAuctions(m){
   const tabs = {open:['Planned & listed', a => /planned|listed/i.test(a.status || 'Planned')], sold:['Sold', a => /^sold$/i.test(a.status)], unsold:['Unsold', a => /unsold/i.test(a.status)], all:['All', () => true]};
   const tb = el('div','toolbar'); const add = el('div','addbar'); add.append(button('Plan an auction','btn small', () => auctionForm(), 'plus'));
   tb.append(add, chipRow('aucTab', tabs, d.auctions)); m.append(tb);
-  m.append(el('p','note','Plan your lineup with starting bids. Mark a lot Sold with the final price and winner and it becomes an order (awaiting payment) automatically.'));
+  m.append(infoNote('How auctions work', 'Plan your lineup with starting bids. Mark a lot Sold with the final price and winner and it becomes an order (awaiting payment) automatically.'));
   listOf(m, d.auctions.filter(tabs[S.aucTab][1]).sort((a,b) => (parseD(a.date)||0) - (parseD(b.date)||0)), auctionRow, 'No auctions here.');
 }
 function auctionForm(a){
@@ -2278,11 +2578,7 @@ function auctionForm(a){
   if(a) f.foot.append(button('Delete','btn danger', async () => { if(!confirm('Delete this lot?')) return; try{ await api('deleteRecord','auctions', a.id); f.close(); await load(); }catch(e){ toast(e.message, true); } }));
 }
 
-/* ---------- Money ---------- */
-function viewMoney(m){
-  const tab = subtabs(m, 'mon', [['expenses','Expenses'],['reorder','Reorder'],['profit','Profit'],['taxes','Taxes'],['settings','Payment info']]);
-  ({expenses:viewExpenses, reorder:viewReorder, profit:viewProfit, taxes:viewTaxes, settings:viewSettings})[tab](m);
-}
+/* ---------- Money (shown under Sales) ---------- */
 function expenseRow(e){
   const b = el('button','row noicon'); b.type='button';
   const mid = el('div'); mid.append(el('div','t', e.desc || e.vendor || '(no description)'), el('div','m', [e.vendor && e.desc ? e.vendor : '', e._d ? fmtD(e._d) : e.date, e.category, e.paidWith, e.tracking ? '#' + e.tracking.slice(-6) : ''].filter(Boolean).join(' · ')));
@@ -2298,12 +2594,8 @@ function viewExpenses(m){
   const live = d.expenses.filter(e => !/cancel/i.test(e.status));
   const month = live.filter(e => e._d && e._d.getFullYear()===y && e._d.getMonth()===mo).reduce((a,e)=>a+e._a,0);
   const ytd = live.filter(e => e._d && e._d.getFullYear()===y).reduce((a,e)=>a+e._a,0);
-  const open = live.filter(e => e._open);
-  const tiles = el('div','tiles');
-  [[fmt$(month),'Spent this month'],[fmt$(ytd),'Spent this year'],[String(open.length),'On the way to you'],[String(live.filter(e => !e.receipt).length),'Missing receipts']]
-    .forEach(([n,l]) => { const x = el('div','tile'); x.append(el('b',null,n), el('span',null,l)); tiles.append(x); });
-  m.append(tiles);
-  const perf = periodPanel(expensePerfCfg()); perf.style.marginTop = '14px'; m.append(perf);
+  // Counts live on the filter chips below; the chart panel holds the three money figures.
+  const perf = periodPanel(expensePerfCfg()); m.append(perf);
   const tb = el('div','toolbar'); tb.style.marginTop = '14px';
   const search = el('input','search'); search.type = 'search'; search.placeholder = 'Find a charge: amount, vendor, statement name, card, order #, date'; search.value = S.expQ;
   const add = el('div','addbar'); add.append(button('Log expense','btn small', () => expenseForm(), 'plus'));
@@ -2340,7 +2632,7 @@ function viewExpenses(m){
 function viewReorder(m){
   const d = S.data;
   const add = el('div','addbar'); add.append(button('Add a supply','btn small', () => supplyForm(), 'plus')); m.append(add);
-  m.append(el('p','note','Things you buy again and again. “Order again” opens the store page and starts the expense so you only fill in what changed.'));
+  m.append(infoNote('How reorder works', 'Things you buy again and again. “Order again” opens the store page and starts the expense so you only fill in what changed.'));
   listOf(m, d.supplies, s => {
     const r = el('div','row noicon'); const mm = el('div');
     mm.append(el('div','t', s.item), el('div','m', [s.vendor, s.category, s.price ? 'last ' + fmt$(money(s.price)) : '', s.lastOrdered ? 'ordered ' + s.lastOrdered : ''].filter(Boolean).join(' · ')));
@@ -2365,16 +2657,19 @@ function supplyForm(s){
 
 function viewProfit(m){
   const d = S.data;
-  m.append(el('p','note','Link a purchase to the plants it became with “For SKUs” on the expense (e.g. 0026, 0158). Its cost is split evenly across those SKUs. Revenue is your paid sales.'));
+  m.append(infoNote('How profit works', 'Link a purchase to the plants it became with “For SKUs” on the expense (e.g. 0026, 0158). Its cost is split evenly across those SKUs. Revenue is money received.'));
   const byCult = {};
   d.sales.filter(s => s._rev > 0).forEach(s => { const k = s.cultivar || '(no cultivar)'; const o = byCult[k] = byCult[k] || {rev:0, n:0, cost:0}; o.rev += s._rev; if(s._paid) o.n += s._u || 1; });
   Object.entries(d.cost).forEach(([sku, c]) => { const p = d.byPlant[sku] || d.byLot[sku]; const k = p ? (p.cultivar && d.byPlant[sku] ? p.cultivar : (p.common || p.cultivar || p.item)) : '(unknown SKU ' + sku + ')'; const o = byCult[k] = byCult[k] || {rev:0, n:0, cost:0}; o.cost += c; });
   const rows = Object.entries(byCult).sort((a,b) => b[1].rev - a[1].rev);
   const tot = rows.reduce((a,[,o]) => ({rev:a.rev+o.rev, cost:a.cost+o.cost, n:a.n+o.n}), {rev:0, cost:0, n:0});
   const tiles = el('div','tiles');
-  [[fmt$(Math.round(tot.rev)),'Received (all time)'],[fmt$(Math.round(tot.cost)),'Linked costs'],[String(Object.keys(d.cost).length),'SKUs with a cost'],[fmt$(Math.round(d.expenses.filter(e => !/cancel/i.test(e.status) && !e._skus.length).reduce((a,e)=>a+e._a,0))),'Expenses not linked']]
+  const owed = d.sales.reduce((a, s) => a + (s._owed || 0), 0);
+  [[fmt$(Math.round(tot.rev)),'Received (all time)'],[fmt$(Math.round(owed)),'Owed (unrealized)'],[fmt$(Math.round(tot.cost)),'Linked costs']]
     .forEach(([n,l]) => { const x = el('div','tile'); x.append(el('b',null,n), el('span',null,l)); tiles.append(x); });
-  m.append(tiles);
+  const unlinked = d.expenses.filter(e => !/cancel/i.test(e.status) && !e._skus.length).reduce((a,e)=>a+e._a,0);
+  if(unlinked) tiles._note = el('p','note', `${fmt$(Math.round(unlinked))} of expenses aren’t linked to a SKU yet.`);
+  m.append(tiles); if(tiles._note) m.append(tiles._note);
   m.append(el('h2','sec','By cultivar'));
   const wrap = el('div','card scroll'); const tbl = el('table','tbl');
   const hr = el('tr'); ['Cultivar','Sold','Revenue','Linked cost','Profit'].forEach((h,i) => hr.append(el('th', i ? 'n' : null, h))); tbl.append(hr);
@@ -2400,9 +2695,11 @@ function viewTaxes(m){
   const sales = d.sales.filter(s => s._revD && s._revD.getFullYear() === Y && s._rev > 0);
   const gross = sales.reduce((a,s)=>a+s._rev,0), spent = ex.reduce((a,e)=>a+e._a,0);
   const tiles = el('div','tiles'); tiles.style.marginTop = '10px';
-  [[fmt$(Math.round(gross)),'Paid sales'],[fmt$(Math.round(spent)),'Expenses'],[fmt$(Math.round(gross - spent)),'Sales minus expenses'],[String(ex.filter(e => !e.receipt).length),'Expenses without a receipt']]
-    .forEach(([n,l], i) => { const x = el('div','tile' + (i===3 && n !== '0' ? ' warn' : '')); x.append(el('b',null,n), el('span',null,l)); tiles.append(x); });
-  m.append(tiles);
+  [[fmt$(Math.round(gross)),'Paid sales'],[fmt$(Math.round(spent)),'Expenses'],[fmt$(Math.round(gross - spent)),'Sales minus expenses']]
+    .forEach(([n,l]) => { const x = el('div','tile'); x.append(el('b',null,n), el('span',null,l)); tiles.append(x); });
+  const noRec = ex.filter(e => !e.receipt).length;
+  if(noRec) tiles._note = el('p','err', `${plural(noRec, 'expense')} without a receipt.`);
+  m.append(tiles); if(tiles._note) m.append(tiles._note);
   m.append(el('h2','sec','Expenses by Schedule C line'));
   const by = {}; ex.forEach(e => { by[e._tax] = (by[e._tax] || 0) + e._a; });
   const w = el('div','card scroll'); const tbl = el('table','tbl');
@@ -2410,7 +2707,7 @@ function viewTaxes(m){
   Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v]) => { const tr = el('tr'); tr.append(el('td', null, k), el('td','n', fmt$(Math.round(v*100)/100))); tbl.append(tr); });
   const trt = el('tr','total'); trt.append(el('td', null, 'Total'), el('td','n', fmt$(Math.round(spent*100)/100))); tbl.append(trt);
   w.append(tbl); m.append(w);
-  m.append(el('p','note','Lines are a starting point based on each category; confirm with your tax preparer before filing. I’m not a tax advisor.'));
+  m.append(infoNote('About tax lines', 'Lines are a starting point based on each category; confirm with your tax preparer before filing. I’m not a tax advisor.'));
   const exp = button(`Download ${Y} expenses (CSV)`,'btn small ghost', () => {
     const rows = [['Expense ID','Date','Vendor','What','Category','Schedule C line','Amount','Shipping','Total','Paid with','Statement name','Order #','Receipt','For SKUs','Notes']]
       .concat(ex.sort((a,b)=>a._d-b._d).map(e => [e.id, iso(e._d), e.vendor, e.desc, e.category, e._tax, money(e.amount), money(e.shipping), e._a, e.paidWith, e.stmt, e.order, e.receipt, e.forSkus, e.notes]));
@@ -2425,7 +2722,7 @@ function viewTaxes(m){
 
   // 1099-K reconciliation
   m.append(el('h2','sec','1099-K check'));
-  m.append(el('p','note','Payment apps send a 1099-K for goods & services payments. Enter what each form says; this compares it with what you logged. Friends & family, Zelle and cash payments aren’t on 1099-Ks but are still sales.'));
+  m.append(infoNote('About 1099-K forms', 'Payment apps send a 1099-K for goods & services payments. Enter what each form says; this compares it with what you logged. Friends & family, Zelle and cash payments aren’t on 1099-Ks but are still sales.'));
   const proc = {};
   sales.forEach(s => { const p = processor(s.payment); const o = proc[p.kind] = proc[p.kind] || {gs:0, ff:0}; if(p.personal) o.ff += s._rev; else o.gs += s._rev; });
   d.k1099.filter(k => String(k.year) === String(Y)).forEach(k => { proc[k.platform] = proc[k.platform] || {gs:0, ff:0}; });
@@ -2441,7 +2738,7 @@ function viewTaxes(m){
   });
   w3.append(t3); m.append(w3);
   const addk = button('Add a 1099-K','btn small ghost', () => k1099Form(Y), 'plus'); addk.style.marginTop = '8px'; m.append(addk);
-  m.append(el('p','note','A positive difference means the 1099-K shows more than you logged: look for sales you haven’t recorded or payments marked F&F that came in as goods & services.'));
+  m.append(infoNote('Reading the difference', 'A positive difference means the 1099-K shows more than you logged: look for sales you haven’t recorded or payments marked F&F that came in as goods & services.'));
 }
 function k1099Form(year, platform, rec){
   form('1099-K', [
@@ -2454,20 +2751,20 @@ function k1099Form(year, platform, rec){
 
 function viewSettings(m){
   const st = S.data.settings, p = st.pay || {}, w = st.weather || {}, k = st.pkg || {};
-  m.append(el('p','note','Saved privately with the app (not in the sheet). Payment handles fill in your payment-request messages.'));
+  m.append(infoNote('Where this is saved', 'Saved privately with the app (not in the sheet). Payment handles fill in your payment-request messages.'));
   const f = form(null, [
     ['venmo','Venmo','text',{placeholder:'@yourname'}], ['paypal','PayPal','text',{placeholder:'email or paypal.me link'}],
     ['zelle','Zelle','text',{placeholder:'phone or email'}], ['cashapp','Cash App','text',{placeholder:'$cashtag'}],
     ['other','Other way to pay','text',{wide:true}], ['payNote','Note at the end of payment messages','area',{placeholder:'e.g. Please send Friends & Family; I ship Mon–Wed.'}],
-    ['shipDays','Ship within (days after paid)','number'], ['repotDays','Repot check after (days)','number'],
-    ['heatPackBelow','Heat pack below (°F lows)','number'], ['holdBelow','Hold shipping below (°F lows)','number'], ['holdAbove','Hold shipping above (°F highs)','number'],
-    ['labelSender','Label emails come from','text',{placeholder:'pirateship.com'}],
-    ['weightOz','Default package weight (oz)','number'], ['l','Length (in)','number'], ['w','Width (in)','number'], ['h','Height (in)','number'],
+    ['shipDays','Ship within (days after paid)','number',{more:true}], ['repotDays','Repot check after (days)','number',{more:true}],
+    ['heatPackBelow','Heat pack below (°F lows)','number',{more:true}], ['holdBelow','Hold shipping below (°F lows)','number',{more:true}], ['holdAbove','Hold shipping above (°F highs)','number',{more:true}],
+    ['labelSender','Label emails come from','text',{more:true, placeholder:'pirateship.com'}],
+    ['weightOz','Default package weight (oz)','number',{more:true}], ['l','Length (in)','number',{more:true}], ['w','Width (in)','number',{more:true}], ['h','Height (in)','number',{more:true}],
   ], {venmo:p.venmo, paypal:p.paypal, zelle:p.zelle, cashapp:p.cashapp, other:p.other, payNote:st.payNote, shipDays:st.shipDays, repotDays:st.repotDays,
       heatPackBelow:w.heatPackBelow, holdBelow:w.holdBelow, holdAbove:w.holdAbove, labelSender:st.labelSender, weightOz:k.weightOz, l:k.l, w:k.w, h:k.h},
   v => api('saveSettings', {pay:{venmo:v.venmo, paypal:v.paypal, zelle:v.zelle, cashapp:v.cashapp, other:v.other}, payNote:v.payNote, shipDays:Number(v.shipDays) || 3, repotDays:Number(v.repotDays) || 90,
     weather:{heatPackBelow:Number(v.heatPackBelow) || 50, holdBelow:Number(v.holdBelow) || 25, holdAbove:Number(v.holdAbove) || 95}, labelSender:v.labelSender || 'pirateship.com', pkg:{weightOz:v.weightOz, l:v.l, w:v.w, h:v.h}}),
-  {inline:m, saveLabel:'Save settings', done: () => 'Settings saved'});
+  {inline:m, moreLabel:'Shipping, weather & packages', saveLabel:'Save settings', done: () => 'Settings saved'});
   viewDevices(m);
 }
 
@@ -2511,10 +2808,11 @@ function showConnect(r){
   }
   const code = el('textarea','inp'); code.readOnly = true; code.rows = 3; code.value = r.url || r.key; code.style.marginTop = '10px'; s.body.append(code);
   s.body.append(button(r.url ? 'Copy link' : 'Copy code','btn small ghost', () => copyText(code.value).then(ok => toast(ok ? 'Copied' : 'Select it to copy')), 'copy'));
-  s.body.append(el('p','note','On iPhone: open it in Safari, then tap Share › Add to Home Screen. If the home-screen app asks to connect, paste this same link or code.'));
+  s.body.append(infoNote('Adding it to your home screen', 'On iPhone: open it in Safari, then tap Share › Add to Home Screen. If the home-screen app asks to connect, paste this same link or code.'));
   s.open();
 }
 
+/* JsForms.html: sheets, forms, photo & video upload, loading data. Included into App.html (inside its one <script>); keep the files in this order. */
 /* ---------- sheets & forms ---------- */
 function sheet(title, lead){
   const scrim = $('#scrim');
@@ -2548,11 +2846,13 @@ function form(title, fields, values, onSave, extra){
   const f = el('form','form'); f.noValidate = true;
   const inputs = {};
   values = values || {};
+  // Fields marked {more:true} sit under a "More details" fold so the form starts short.
+  const fold = el('details','fold more'); const foldBox = el('div','form'); let filled = 0;
   fields.forEach(([key, label, type, opts]) => {
     opts = opts || {};
     const w = el('label','f' + (opts.wide || type==='area' ? ' wide' : '') + (type==='check' ? ' check wide' : ''));
     let inp;
-    if(type==='select'){ inp = el('select'); (opts.choices || []).forEach(c => { const o = el('option', null, c || '—'); o.value = c; inp.append(o); }); if(values[key] && !(opts.choices||[]).includes(values[key])){ const o = el('option', null, values[key]); o.value = values[key]; inp.append(o); } }
+    if(type==='select'){ inp = el('select'); (opts.choices || []).forEach(c => { const o = el('option', null, (opts.say ? opts.say(c) : c) || '—'); o.value = c; inp.append(o); }); if(values[key] && !(opts.choices||[]).includes(values[key])){ const o = el('option', null, values[key]); o.value = values[key]; inp.append(o); } }
     else if(type==='area') inp = el('textarea');
     else { inp = el('input'); inp.type = type==='date' ? 'date' : type==='number' ? 'number' : type==='check' ? 'checkbox' : 'text'; if(type==='money'){ inp.inputMode = 'decimal'; inp.placeholder = '$0.00'; } if(type==='number') inp.inputMode = 'decimal'; }
     if(type==='list' && opts.choices){ const id = 'dl-' + key + '-' + Math.random().toString(36).slice(2,7); const dl = el('datalist'); dl.id = id; [...new Set(opts.choices)].forEach(c => { const o = el('option'); o.value = c; dl.append(o); }); inp.setAttribute('list', id); w.append(dl); }
@@ -2566,8 +2866,12 @@ function form(title, fields, values, onSave, extra){
     inp.name = key; inputs[key] = inp;
     if(type==='check'){ w.append(inp, el('span', null, label)); } else { w.append(document.createTextNode(label + (opts.required ? ' *' : '')), inp); }
     if(opts.hint) w.append(el('span','hint', opts.hint));
-    f.append(w);
+    if(opts.more){ foldBox.append(w); if(type==='check' ? v : v != null && String(v).trim() !== '') filled++; } else f.append(w);
   });
+  if(foldBox.children.length){
+    const sm = el('summary'); sm.append(el('span', null, (extra.moreLabel || 'More details') + (extra.editing && filled ? ` · ${filled} filled` : '')), el('span','edit', 'Show'));
+    fold.append(sm, foldBox); fold.ontoggle = () => { sm.lastChild.textContent = fold.open ? 'Hide' : 'Show'; }; f.append(fold);
+  }
   s.body.append(f);
   const err = el('p','err'); err.hidden = true; err.setAttribute('role','alert');
   const save = el('button','btn', extra.saveLabel || 'Save'); save.type = 'button';
@@ -2582,7 +2886,9 @@ function form(title, fields, values, onSave, extra){
       if(opts && opts.required && !out[key]){ err.textContent = label + ' is needed.'; err.hidden = false; inp.focus(); return; }
     }
     err.hidden = true; save.disabled = true; save.textContent = 'Saving…';
-    try{ const r = await onSave(out); if(!inline) close(); toast((extra.done && extra.done(r)) || 'Saved'); if(extra.after) await extra.after(r, out); await load(); }
+    try{ const r = await onSave(out); if(!inline) close(); toast((extra.done && extra.done(r)) || 'Saved');
+      if(extra.after){ try{ await extra.after(r, out); }catch(e){ toast((e.message || String(e)) + ' It was saved; add the photos again from its page.', true); } }
+      await load(); }
     catch(e){ err.textContent = e.message || String(e); err.hidden = false; save.disabled = false; save.textContent = extra.saveLabel || 'Save'; }
   };
   save.onclick = submit;
@@ -2595,36 +2901,42 @@ const skuOf = v => { const m = String(v).match(/^\s*(\d{1,4})/); return m ? m[1]
 
 function plantForm(p){
   const o = S.data.options;
-  form(p ? `Edit ${p.sku}` : 'New plant', [
+  const f = form(p ? `Edit ${p.sku}` : 'New plant', [
     ...(p ? [] : [['sku','SKU (optional)','text',{placeholder:'Blank = next number, or type one like 0012', wide:true}]]),
     ['cultivar','Cultivar name','list',{choices:o.cultivars, required:true, wide:true}],
     ['var','Var-type','list',{choices:o.vars}],
     ['stage','Stage','select',{choices:[''].concat(o.stageList)}],
     ['status','For sale?','select',{choices:o.plantStatus}],
-    ['species','Species','text'],
-    ['parent','Parent SKU or source','text',{placeholder:'e.g. 0077, or who it came from'}],
-    ['sub','Sub-code','text'],
-    ['common','Common name','text'],
-    ['genus','Genus','text'],
+    ['species','Species','text',{more:true}],
+    ['parent','Parent SKU or source','text',{more:true, placeholder:'e.g. 0077, or who it came from'}],
+    ['sub','Sub-code','text',{more:true}],
+    ['common','Common name','text',{more:true}],
+    ['genus','Genus','text',{more:true}],
   ], p || {status:'NFS', genus:'Alocasia'}, v => api('savePlant', Object.assign({}, v, p ? {row:p.row, sku:p.sku} : {})),
-  {lead: p ? '' : 'Leave SKU blank for the next number after your highest, or type one to fill an empty spot.', done: r => p ? 'Saved' : `Added as SKU ${r.sku}`});
+  {editing: !!p, lead: p ? '' : 'Leave SKU blank for the next number.', done: r => p ? 'Saved' : `Added as SKU ${r.sku}`,
+   after: async r => { const files = pick.files(); if(files.length) await uploadTo(r.sku || p.sku, files); }});
+  const pick = mediaPicker(true); f.body.append(pick.el);
 }
 function cormForm(c){
   const o = S.data.options;
-  form(c ? `Corm lot ${c.lot}` : 'New corm lot', [
+  const hasUnits = !!(c && c._units && c._units.length);
+  const f = form(c ? `Corm lot ${c.lot}` : 'New corm lot', [
     ...(c ? [] : [['lot','Lot number (optional)','text',{placeholder:'Blank = next number, or type one like 0043', wide:true}]]),
     ['item','Item name','text',{required:true, wide:true, placeholder:'e.g. Plumbea Pink C'}],
     ['common','Cultivar (trade name)','list',{choices:o.cultivars, placeholder:'e.g. Plumbea'}],
     ['var','Var-type','list',{choices:o.vars}],
-    ['cultivar','Species','text',{placeholder:'e.g. Maccrorhizos'}],
-    ['sub','Sub-code / line','text',{placeholder:'e.g. C, B1'}],
-    ['qty','Qty','number'],
-    ['harvest','Harvest date','date'],
-    ['parent','Parent SKU or source','text'],
+    ['cultivar','Species','text',{more:true, placeholder:'e.g. Maccrorhizos'}],
+    ['sub','Sub-code / line','text',{more:true, placeholder:'e.g. C, B1'}],
+    ['qty','Qty','number',{hint: hasUnits ? 'Counted from the corms listed in this lot' : ''}],
+    ['harvest','Harvest date','date',{more:true}],
+    ['parent','Parent SKU or source','text',{more:true}],
     ['status','For sale?','select',{choices:o.cormStatus || o.plantStatus}],
-    ['notes','Notes','area'],
+    ['notes','Notes','area',{more:true}],
   ], c || {status:'NFS', harvest: iso(today())}, v => api('saveCorm', Object.assign({}, v, c ? {row:c.row, lot:c.lot} : {})),
-  {done: r => c ? 'Saved' : `Added as lot ${r.lot}`});
+  {editing: !!c, done: r => c ? 'Saved' : `Added as lot ${r.lot}`,
+   after: async r => { const files = pick.files(); if(files.length) await uploadTo('LOT ' + (r.lot || c.lot), files); }});
+  if(hasUnits) f.inputs.qty.readOnly = true;
+  const pick = mediaPicker(true); f.body.append(pick.el);
 }
 function repotForm(sku){
   const p = sku && S.data.byPlant[sku];
@@ -2639,35 +2951,44 @@ function repotForm(sku){
 }
 function saleForm(x, plant){
   const o = S.data.options;
-  const init = x ? Object.assign({}, x, {price: x._p || ''}) : {date: iso(today()), paid:'Paid', units:'1'};
+  const init = x ? Object.assign({}, x, {price: x._p || '', paid: /^deposit$/i.test(x.paid) ? 'Hold' : x.paid, paidAmt: money(x.paidAmt) || (x._deposit && x._rev ? x._rev : '')}) : {date: iso(today()), paid:'Paid', units:'1'};
   if(plant && !x) Object.assign(init, {sku:plant.sku, item:`${plant.cultivar}${plant.var ? ' ' + plant.var : ''}${plant.stage ? ' - ' + plant.stage.toLowerCase() : ''}`, stage:plant.stage, cultivar:plant.cultivar, var:plant.var});
   const fields = [
     ['item','What sold','text',{required:true, wide:true}],
     ['customer','Customer','list',{choices:S.data.clients.map(c => c.name)}],
     ['price','Price','money'],
-    ['date','Date','date'],
-    ['units','Units','number'],
-    ['paid','Paid?','select',{choices:o.paid}],
-    ['payment','Payment type','list',{choices:o.payment}],
-    ['type','Sale type','list',{choices:o.saleType}],
-    ['platform','Platform','list',{choices:o.platform}],
-    ['sku','SKU / lot','text'],
-    ['stage','Stage','list',{choices:o.stageList}],
-    ['cultivar','Cultivar','list',{choices:o.cultivars}],
-    ['var','Var-type','list',{choices:o.vars}],
-    ['sub','Sub-code / line','text',{placeholder:'e.g. C, C11'}],
-    ['harvest','Harvest date','date'],
-    ['courier','Courier','list',{choices:o.courier}],
-    ['tracking','Tracking #','text'],
-    ['delivered','Delivery status','select',{choices:[''].concat(o.delivered || [])}],
-    ['received','Date received','date'],
-    ['option','Shipping option','text',{placeholder:'e.g. 2DA, Priority'}],
-    ['link','Link / order ID','text',{wide:true}],
-    ['notes','Notes','area'],
+    ['date','Date','date',{more:true}],
+    ['units','Units','number',{more:true}],
+    ['paid','Paid?','select',{choices:o.paid, say: v => ({Paid:'Paid in full', Hold:'On hold (part paid)', Pending:'Owed (not paid yet)'})[v] || v}],
+    ['paidAmt','Paid so far','money',{hint:'Hold: what they’ve paid up front. It counts as received; the rest shows as owed.'}],
+    ['payment','Payment type','list',{more:true, choices:o.payment}],
+    ['type','Sale type','list',{more:true, choices:o.saleType}],
+    ['platform','Platform','list',{more:true, choices:o.platform}],
+    ['sku','SKU / lot','text',{more:true}],
+    ['stage','Stage','list',{more:true, choices:o.stageList}],
+    ['cultivar','Cultivar','list',{more:true, choices:o.cultivars}],
+    ['var','Var-type','list',{more:true, choices:o.vars}],
+    ['sub','Sub-code / line','text',{more:true, placeholder:'e.g. C, C11'}],
+    ['harvest','Harvest date','date',{more:true}],
+    ['courier','Courier','list',{more:true, choices:o.courier}],
+    ['tracking','Tracking #','text',{more:true}],
+    ['delivered','Delivery status','select',{more:true, choices:[''].concat(o.delivered || [])}],
+    ['received','Date received','date',{more:true}],
+    ['option','Shipping option','text',{more:true, placeholder:'e.g. 2DA, Priority'}],
+    ['link','Link / order ID','text',{more:true, wide:true}],
+    ['notes','Notes','area',{more:true}],
   ];
   const f = form(x ? `Sale ${x.id}` : 'Record a sale', fields, init, v => api('saveSale', Object.assign({}, v, x ? {id:x.id} : {})),
-    {done: r => x ? 'Sale updated' : `Recorded ${r.id}${r.orderId ? ' · order ' + r.orderId : ''}`, lead: x && x.orderId ? `Part of order ${x.orderId}. Shipping changes here update the order too.` : (x ? '' : 'Tip: “New order” on the Orders tab handles multi-item orders, payment and shipping in one place.')});
+    {editing: !!x, done: r => x ? 'Sale updated' : `Recorded ${r.id}${r.orderId ? ' · order ' + r.orderId : ''}`, lead: x && x.orderId ? `Part of order ${x.orderId}. Shipping changes here update the order too.` : (x ? '' : 'Selling one item? The Sold button on its page is quicker.')});
   if(x && x.tracking){ const a = link('Track package', trackUrl(x.courier, x.tracking), 'btn small ghost'); f.inputs.tracking.parentNode.append(a); }
+  showWhen(f.inputs.paidAmt, f.inputs.paid, v => /^(hold|deposit)$/i.test(v));
+}
+/** Show a form field only while another field has a matching value (keeps forms short). */
+/** A long explanation, folded behind one short line. */
+function infoNote(title, text){ const d = el('details','info'); const sm = el('summary', null, title); d.append(sm, el('p', null, text)); return d; }
+function showWhen(inp, ctl, test){
+  const w = inp.closest('label'); const upd = () => { w.hidden = !test(ctl.value); };
+  ctl.addEventListener('change', upd); upd();
 }
 function expenseForm(e, preset){
   const o = S.data.options, d = S.data;
@@ -2678,26 +2999,26 @@ function expenseForm(e, preset){
     ['vendor','Seller / vendor','text'],
     ['category','Category','select',{choices:o.expenseCategory}],
     ['amount','Amount','money'],
-    ['shipping','Shipping cost','money'],
+    ['shipping','Shipping cost','money',{more:true}],
     ['date','Date ordered / charged','date'],
-    ['paidWith','Paid with','list',{choices:paidWith.length ? paidWith : ['Business card','Personal card','PayPal','Venmo','Cash'], placeholder:'Card or account nickname'}],
-    ['stmt','Name on statement','text',{placeholder:'e.g. AMZN Mktp US*2K4…', hint:'How the charge shows on your bank statement'}],
-    ['platform','Where bought','text',{placeholder:'Palmstreet, Facebook, Etsy…'}],
-    ['order','Order #','text'],
-    ['status','Status','select',{choices:o.expenseStatus}],
-    ['courier','Courier','list',{choices:o.courier}],
-    ['tracking','Tracking #','text'],
-    ['received','Date received','date'],
-    ['forSkus','For SKUs (profit tracking)','text',{wide:true, placeholder:'e.g. 0026, 0158 · the plants or lots this purchase became'}],
+    ['paidWith','Paid with','list',{more:true, choices:paidWith.length ? paidWith : ['Business card','Personal card','PayPal','Venmo','Cash'], placeholder:'Card or account nickname'}],
+    ['stmt','Name on statement','text',{more:true, placeholder:'e.g. AMZN Mktp US*2K4…', hint:'How the charge shows on your bank statement'}],
+    ['platform','Where bought','text',{more:true, placeholder:'Palmstreet, Facebook, Etsy…'}],
+    ['order','Order #','text',{more:true}],
+    ['status','Status','select',{more:true, choices:o.expenseStatus}],
+    ['courier','Courier','list',{more:true, choices:o.courier}],
+    ['tracking','Tracking #','text',{more:true}],
+    ['received','Date received','date',{more:true}],
+    ['forSkus','For SKUs (profit tracking)','text',{more:true, wide:true, placeholder:'e.g. 0026, 0158 · the plants or lots this purchase became'}],
     ['receipt','Receipt link','text',{wide:true, placeholder:'Attach below, or paste a link'}],
-    ['notes','Notes','area'],
+    ['notes','Notes','area',{more:true}],
   ], init, async v => {
     if(v.status === 'Received' && !v.received) v.received = iso(today());
     if(init.supplyId) v.supplyId = init.supplyId;
     const r = await api('saveExpense', Object.assign({}, v, e ? {id:e.id} : {}));
     if(file){ const pass = await api('prepareReceiptUpload'); const id = await uploadOne(file, pass); await api('attachReceipt', r.id, id); }
     return r;
-  }, {done: r => e ? 'Expense updated' : `Logged ${r.id}`});
+  }, {editing: !!e, done: r => e ? 'Expense updated' : `Logged ${r.id}`});
   const tax = el('p','note'); const showTax = () => { tax.textContent = 'Schedule C: ' + ((o.taxLines || {})[f.inputs.category.value] || '—'); };
   f.inputs.category.parentNode.append(tax); f.inputs.category.addEventListener('change', showTax); showTax();
   // receipt: photo/PDF upload or a Gmail message
@@ -2727,52 +3048,70 @@ async function gmailReceipt(inputs){
 
 /* ---------- photo & video upload ---------- */
 function stamp(d){ const p = n => String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
-function openUpload(sku){
-  const p = sku && S.data.byPlant[sku];
-  const s = sheet('Add photos & videos', 'They go into the plant’s album and show up in the customer catalog within about 30 minutes.');
-  const fw = el('label','f wide'); fw.append('Plant');
-  const pick = el('input'); pick.type = 'text'; pick.placeholder = 'Type a SKU or cultivar'; const dlid = 'dl-up'; pick.setAttribute('list', dlid);
-  const dl = el('datalist'); dl.id = dlid; skuChoices().forEach(c => { const o = el('option'); o.value = c; dl.append(o); });
-  if(p) pick.value = `${p.sku} · ${p.cultivar}${p.var ? ' ' + p.var : ''}`;
-  fw.append(pick, dl);
-  const box = el('label','pick'); box.style.marginTop = '12px';
-  const inp = el('input'); inp.type = 'file'; inp.accept = 'image/*,video/*'; inp.multiple = true;
-  box.append(icon('camera')); box.append(el('b', null, 'Take or choose photos & videos'), el('span', null, 'Pick as many as you like'), inp);
-  const list = el('div','files');
-  s.body.append(fw, box, list);
+/** Upload photos/videos to an album ("0011" for a plant, "LOT 0043" for a lot; unitId names a corm's photo). */
+async function uploadTo(key, files, unitId, onFile){
+  if(!files || !files.length) return [];
+  const n = files.length;
+  toast(`Uploading ${plural(n, 'file')}…`);
+  const pass = await api('prepareUpload', key, unitId || '');
+  const ids = [];
+  for(const f of files){
+    if(f._done){ ids.push(f._done); continue; }
+    try{ f._done = await uploadOne(f, pass); ids.push(f._done); if(f._prog){ f._prog.classList.add('done'); f._prog.firstChild.style.width = '100%'; } if(onFile) onFile(ids.length, n); }
+    catch(e){ if(f._prog) f._prog.classList.add('fail'); throw e; }
+  }
+  await api('finishUpload', key, ids, unitId || '');
+  toast(`${plural(ids.length, 'file')} added`);
+  return ids;
+}
+/** Photo/video picker with previews, for forms (files upload after saving). */
+function mediaPicker(multi, label){
   let files = [];
+  const w = el('div'); w.style.marginTop = '12px';
+  const box = el('label','pick');
+  const inp = el('input'); inp.type = 'file'; inp.accept = multi ? 'image/*,video/*' : 'image/*'; inp.multiple = !!multi;
+  box.append(icon('camera'), el('b', null, label || 'Add photos & videos'), el('span', null, multi ? 'Optional · they upload when you save' : 'Optional · uploads when you save'), inp);
+  const list = el('div','files');
   inp.onchange = () => {
-    files = files.concat([...inp.files]); inp.value = '';
+    files = multi ? files.concat([...inp.files]) : [...inp.files].slice(0, 1); inp.value = '';
     list.replaceChildren();
     files.forEach(f => {
       const row = el('div','file'); const pv = el('div','pv');
       if(/^image\//.test(f.type)){ const im = el('img'); im.src = URL.createObjectURL(f); im.alt = ''; pv.append(im); } else pv.textContent = 'VIDEO';
       const info = el('div'); info.append(el('div', null, f.name), el('div','sku', (f.size/1048576).toFixed(1) + ' MB'));
-      const prog = el('div','prog'); prog.append(el('i')); info.append(prog);
-      row.append(pv, info); list.append(row); f._prog = prog;
+      const prog = el('div','prog'); prog.append(el('i')); info.append(prog); f._prog = prog;
+      row.append(pv, info); list.append(row);
     });
-    gob.disabled = !files.length; gob.textContent = files.length ? `Upload ${files.length} file${files.length===1?'':'s'}` : 'Upload';
   };
+  w.append(box, list);
+  return {el: w, files: () => files};
+}
+function albumChoices(){
+  const d = S.data;
+  return d.plants.filter(p => p._active).map(p => ({label:`${p.sku} · ${p.cultivar}${p.var ? ' ' + p.var : ''}`, key:p.sku}))
+    .concat(d.corms.filter(c => c._active).map(c => ({label:`Lot ${c.lot} · ${c.item}`, key:'LOT ' + c.lot})));
+}
+function openUpload(key){
+  const ch = albumChoices();
+  const s = sheet('Add photos & videos', 'They go into the album and show up in the customer catalog within about 30 minutes.');
+  const fw = el('label','f wide'); fw.append('Plant or corm lot');
+  const pick = el('input'); pick.type = 'text'; pick.placeholder = 'Type a SKU, lot or cultivar'; const dlid = 'dl-up'; pick.setAttribute('list', dlid);
+  const dl = el('datalist'); dl.id = dlid; ch.forEach(c => { const o = el('option'); o.value = c.label; dl.append(o); });
+  const pre = key && ch.find(c => c.key === key); if(pre) pick.value = pre.label;
+  fw.append(pick, dl);
+  const mp = mediaPicker(true, 'Take or choose photos & videos');
+  s.body.append(fw, mp.el);
   const err = el('p','err'); err.hidden = true;
-  const gob = el('button','btn leaf','Upload'); gob.type = 'button'; gob.disabled = true;
+  const gob = el('button','btn leaf','Upload'); gob.type = 'button';
   s.foot.append(err, gob);
   const close = s.open();
   gob.onclick = async () => {
-    const k = skuOf(pick.value);
-    if(!S.data.byPlant[k]){ err.textContent = 'Pick a plant from the list.'; err.hidden = false; pick.focus(); return; }
+    const hit = ch.find(c => c.label === pick.value.trim()) || ch.find(c => c.key === skuOf(pick.value));
+    if(!hit){ err.textContent = 'Pick a plant or lot from the list.'; err.hidden = false; pick.focus(); return; }
+    if(!mp.files().length){ err.textContent = 'Choose at least one photo or video.'; err.hidden = false; return; }
     err.hidden = true; gob.disabled = true; gob.textContent = 'Uploading…';
-    try{
-      const pass = await api('prepareUpload', k);
-      const ids = [];
-      for(const f of files){
-        if(f._done){ ids.push(f._done); continue; }
-        try{ f._done = await uploadOne(f, pass); ids.push(f._done); f._prog.classList.add('done'); f._prog.firstChild.style.width = '100%'; }
-        catch(e){ f._prog.classList.add('fail'); throw e; }
-      }
-      gob.textContent = 'Finishing…';
-      await api('finishUpload', k, ids);
-      close(); toast(`${ids.length} file${ids.length===1?'':'s'} added to ${k}`); await load();
-    }catch(e){ err.textContent = (e.message || String(e)) + ' You can try again; finished files won’t upload twice.'; err.hidden = false; gob.disabled = false; gob.textContent = 'Try again'; }
+    try{ await uploadTo(hit.key, mp.files(), '', (i, n) => { gob.textContent = `Uploading ${i} of ${n}…`; }); close(); await load(); }
+    catch(e){ err.textContent = (e.message || String(e)) + ' You can try again; finished files won’t upload twice.'; err.hidden = false; gob.disabled = false; gob.textContent = 'Try again'; }
   };
 }
 function uploadOne(file, pass){
